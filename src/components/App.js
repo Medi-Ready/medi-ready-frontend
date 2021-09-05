@@ -65,4 +65,19 @@ const App = () => {
   );
 };
 
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const Section = styled.section`
+  width: calc(100% - 230px);
+  min-height: 100vh;
+  background-color: ${({ theme }) => theme.color.grey};
+`;
+
+const Article = styled.article`
+  height: calc(100% - 115px);
+  padding: ${({ theme }) => theme.padding.big};
+`;
+
 export default App;
