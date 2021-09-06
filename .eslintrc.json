@@ -28,6 +28,10 @@
       "warn",
       "last"
     ],
+    "comma-dangle": [
+      "warn",
+      "always-multiline"
+    ],
     "no-multiple-empty-lines": [
       "warn",
       {
