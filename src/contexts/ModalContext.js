@@ -12,7 +12,7 @@ const ModalProvider = ({ children }) => {
   const {
     isModalOpened,
     handleModal,
-    modalContent
+    modalContent,
   } = useModal();
 
   return (

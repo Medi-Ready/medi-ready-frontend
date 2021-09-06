@@ -18,7 +18,7 @@ const CloseButton = (props) => {
   const {
     text,
     color,
-    closeModal
+    closeModal,
   } = props;
 
   return (

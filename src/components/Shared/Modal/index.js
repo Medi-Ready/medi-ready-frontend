@@ -11,13 +11,17 @@ const Modal = () => {
   const modalRef = useRef();
 
   const clickDimmed = (event) => {
-    if (!modalRef.current || modalRef.current.contains(event.target)) return;
+    if (!modalRef.current || modalRef.current.contains(event.target)) {
+      return;
+    }
 
     handleModal(null);
   };
 
   const renderModal = () => {
-    if (!isModalOpened) return null;
+    if (!isModalOpened) {
+      return null;
+    }
 
     return (
       <Dimmed onClick={clickDimmed}>
@@ -33,7 +37,7 @@ const Modal = () => {
     <>
       {createPortal(
         renderModal(),
-        document.getElementById("modal")
+        document.getElementById("modal"),
       )}
     </>
   );

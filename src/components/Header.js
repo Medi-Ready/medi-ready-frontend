@@ -29,11 +29,11 @@ const StyledHeader = styled.header`
     align-items: center;
   }
 
-  text {
+  .text {
     margin-right: 10px;
   }
 
-  img {
+  .img {
     width: 40px;
     height: 40px;
   }
