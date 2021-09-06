@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import styled, { ThemeProvider } from "styled-components";
 
 import GlobalStyles from "../styles";
@@ -14,52 +15,57 @@ import Dashboard from "./Dashboard";
 import Prescription from "./Prescription";
 import { ModalProvider } from "../contexts/ModalContext";
 
+const queryClient = new QueryClient();
+
 const App = () => {
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Navigation />
+        <QueryClientProvider client={queryClient}>
+          <GlobalStyles />
+          <Navigation />
 
-        <Section>
-          <Header />
+          <Section>
+            <Header />
 
-          <Article>
-            <ModalProvider>
-              <Switch>
-                <Route path="/dashboard">
-                  <Dashboard />
-                </Route>
+            <Article>
+              <ModalProvider>
+                <Switch>
+                  <Route path="/dashboard">
+                    <Dashboard />
+                  </Route>
 
-                <Route path="/prescription">
-                  <Prescription />
-                </Route>
+                  <Route path="/prescription">
+                    <Prescription />
+                  </Route>
 
-                <Route path="/history">
-                  <History />
-                </Route>
+                  <Route path="/history">
+                    <History />
+                  </Route>
 
-                <Route path="/history/:id">
+                  <Route path="/history/:id">
 
-                </Route>
+                  </Route>
 
-                <Route path="/settings">
-                  <Settings />
-                </Route>
+                  <Route path="/settings">
+                    <Settings />
+                  </Route>
 
-                <Route path="/login">
-                  <Login />
-                </Route>
+                  <Route path="/login">
+                    <Login />
+                  </Route>
 
-                <Route path="/" exact>
-                  <Redirect to="/dashboard" />
-                </Route>
-              </Switch>
-            </ModalProvider>
-          </Article>
+                  <Route path="/" exact>
+                    <Redirect to="/dashboard" />
+                  </Route>
+                </Switch>
+              </ModalProvider>
+            </Article>
 
-          <Footer />
-        </Section>
+            <Footer />
+          </Section>
+
+        </QueryClientProvider>
       </ThemeProvider>
     </Wrapper>
   );
