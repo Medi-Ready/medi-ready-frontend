@@ -12,7 +12,7 @@ import Navigation from "./Navigation";
 import Login from "./Login";
 import History from "./History";
 import Settings from "./Settings";
-import Dashboard from "./Dashboard";
+import DashboardList from "./DashboardList";
 import Prescription from "./Prescription";
 import { ModalProvider } from "../contexts/ModalContext";
 
@@ -23,7 +23,6 @@ const App = () => {
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={true} />
           <GlobalStyles />
           <Navigation />
 
@@ -34,7 +33,7 @@ const App = () => {
               <ModalProvider>
                 <Switch>
                   <Route path="/dashboard">
-                    <Dashboard />
+                    <DashboardList />
                   </Route>
 
                   <Route path="/prescription">

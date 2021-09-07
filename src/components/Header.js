@@ -20,6 +20,7 @@ const Header = () => {
 const StyledHeader = styled.header`
   display: flex;
   height: 55px;
+  padding: 0 20px;
   align-items: center;
   background-color: ${({ theme }) => theme.color.white};
 
