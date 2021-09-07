@@ -1,20 +1,36 @@
 import firebase from "../config/firebase";
-import { useQuery, useMutation } from "react-query";
-import React, { useState, useEffect } from "react";
+import { useQuery, useMutation, queryClient } from "react-query";
+
+import styled from "styled-components";
 
 const postUser = async (user) => {
-  await fetch("/login", {
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/login`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: user,
+    body: JSON.stringify(user),
   });
+
+  if (!response.ok) {
+    throw Error("Interner Server Error");
+  }
+
+  return response.json();
 };
 
 const Login = () => {
-  const mutation = useMutation((user) => postUser(user));
+  const query = useQuery("user");
+  const mutation = useMutation(postUser, {
+    onSuccess: () => {
+      window.location.href = "/";
+    },
+    onMutate: (userInfo) => {
+      queryClient.setQueryData("user", userInfo);
+    },
+  });
 
   const { isLoading, isError, error, isSuccess, data } = mutation;
 
@@ -24,10 +40,10 @@ const Login = () => {
     const { email, name, picture } = additionalUserInfo.profile;
 
     const userData = {
-      type: "pharmacist",
-      email,
       name,
+      email,
       picture,
+      user_type: "pharmacist",
     };
 
     mutation.mutate(userData);
