@@ -1,12 +1,14 @@
 import React from "react";
+
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-export default function Dashboard({ src, color, number, string }) {
+const Dashboard = ({ src, color, number, text }) => {
   return (
     <StyledDashboard src={src} color={color}>
       <div>
         <em>{number}</em>
-        <span>{string}</span>
+        <span>{text}</span>
       </div>
     </StyledDashboard>
   );
@@ -52,3 +54,12 @@ const StyledDashboard = styled.div`
     color: #B9B9B9;
   }
 `;
+
+Dashboard.propTypes = {
+  src: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+};
+
+export default Dashboard;
