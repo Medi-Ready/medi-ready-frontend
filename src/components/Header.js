@@ -5,8 +5,8 @@ const Header = () => {
   return (
     <StyledHeader>
       <div>
-        <span class="text">Welcome, 유저이름</span>
-        <span class="img">
+        <span className="text">Welcome, 유저이름</span>
+        <span className="img">
           <img
             alt="유저이름"
             src="https://avatars.githubusercontent.com/u/60248910?v=4"

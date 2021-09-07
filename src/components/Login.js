@@ -1,12 +1,22 @@
 import firebase from "../config/firebase";
-import { useMutation } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import React, { useState, useEffect } from "react";
 
-const Login = () => {
-  const mutation = useMutation(user => fetch("/api/login", {
+const postUser = async (user) => {
+  await fetch("/login", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
     body: user,
-  }));
+  });
+};
+
+const Login = () => {
+  const mutation = useMutation((user) => postUser(user));
+
+  const { isLoading, isError, error, isSuccess, data } = mutation;
 
   const loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();

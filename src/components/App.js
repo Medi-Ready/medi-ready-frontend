@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import styled, { ThemeProvider } from "styled-components";
 
 import GlobalStyles from "../styles";
@@ -22,6 +23,7 @@ const App = () => {
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={true} />
           <GlobalStyles />
           <Navigation />
 
