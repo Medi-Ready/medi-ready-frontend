@@ -2,9 +2,7 @@ import React from "react";
 
 const Prescription = () => {
   return (
-    <>
-      <h2>Prescription</h2>
-    </>
+    <h2>Prescription</h2>
   );
 };
 
