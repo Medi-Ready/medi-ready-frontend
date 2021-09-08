@@ -15,6 +15,7 @@ import Settings from "./Settings";
 import DashboardList from "./DashboardList";
 import Prescription from "./Prescription";
 import { ModalProvider } from "../contexts/ModalContext";
+import { getAuthCheck } from "../api";
 
 const queryClient = new QueryClient();
 
@@ -24,20 +25,10 @@ const App = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth-check`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      const { result, userInfo } = await response.json();
+      const { result, data } = await getAuthCheck();
 
       if (result === "success") {
-        setUser(userInfo);
-        history.push("/");
+        setUser(data);
       } else {
         setUser("");
         history.push("/login");

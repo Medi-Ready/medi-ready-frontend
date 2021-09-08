@@ -3,22 +3,15 @@ import { Link, useHistory } from "react-router-dom";
 
 import styled from "styled-components";
 
+import { postLogout } from "../api";
+
 const Navigation = ({ isLoggedIn, setUser }) => {
   const history = useHistory();
 
   const handleLogout = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/logout`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-
-    const { result } = await response.json();
+    const { result } = await postLogout();
 
     if (result === "success") {
       setUser("");
@@ -37,7 +30,7 @@ const Navigation = ({ isLoggedIn, setUser }) => {
           <li><Link to="/history">History</Link></li>
           <li><Link to="/settings">Settings</Link></li>
           <li>
-            { isLoggedIn ? (
+            {isLoggedIn ? (
               <a href="#" onClick={handleLogout}>Logout</a>
             ) : (
               <Link to="/login">Login</Link>

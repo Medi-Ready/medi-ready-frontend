@@ -4,30 +4,16 @@ import { useMutation } from "react-query";
 
 import styled from "styled-components";
 
-const postLogin = async (user) => {
-  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/login`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-
-  if (!response.ok) {
-    throw Error("Interner Server Error");
-  }
-
-  return response.json();
-};
+import { postLogin } from "../api";
 
 const Login = ({ onSuccess }) => {
   const history = useHistory();
 
   const { mutate } = useMutation(postLogin, {
-    onSuccess: (userInfo) => {
-      onSuccess(userInfo.user[0]);
+    onSuccess: (result) => {
+      const { user } = result.data;
+
+      onSuccess(user[0]);
       history.push("/");
     },
   });
