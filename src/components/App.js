@@ -13,7 +13,7 @@ import Login from "./Login";
 import History from "./History";
 import Settings from "./Settings";
 import DashboardList from "./DashboardList";
-import Prescription from "./Prescription";
+import Prescription from "../components/Prescription";
 import { ModalProvider } from "../contexts/ModalContext";
 import { getAuthCheck } from "../api";
 
@@ -43,7 +43,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
-          <Navigation isLoggedIn={user} setUser={setUser} />
+          <Navigation isLoggedIn={user} onLogout={setUser} />
           <Section>
             <Header />
             <Article>
@@ -55,10 +55,10 @@ const App = () => {
                   <Route path="/prescription">
                     <Prescription />
                   </Route>
-                  <Route path="/history">
+                  <Route path="/prescriptions">
                     <History />
                   </Route>
-                  <Route path="/history/:id">
+                  <Route path="/prescriptions/:id">
 
                   </Route>
                   <Route path="/settings">
