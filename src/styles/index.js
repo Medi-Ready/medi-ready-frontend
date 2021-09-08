@@ -29,6 +29,11 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
+  button {
+    background-color: transparent;
+    cursor: pointer;
+  }
+
   h1, h2, h3, h4, h5, h6{
     font-family: "Maven Pro", sans-serif;
     letter-spacing: 0.04em;
@@ -47,6 +52,15 @@ const GlobalStyle = createGlobalStyle`
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  .sr-only {
+    overflow: hidden;
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
   }
 `;
 

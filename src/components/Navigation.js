@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import styled from "styled-components";
 
 const Navigation = () => {
   return (
     <StyledNavigation>
-      <h1 class="logo"><Link to="/">MEDI-READY</Link></h1>
+      <h1 className="logo"><Link to="/">MEDI-READY</Link></h1>
 
       <nav>
         <ul>

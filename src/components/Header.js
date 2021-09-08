@@ -1,12 +1,13 @@
 import React from "react";
+
 import styled from "styled-components";
 
 const Header = () => {
   return (
     <StyledHeader>
       <div>
-        <span class="text">Welcome, 유저이름</span>
-        <span class="img">
+        <span className="text">Welcome, 유저이름</span>
+        <span className="img">
           <img
             alt="유저이름"
             src="https://avatars.githubusercontent.com/u/60248910?v=4"
@@ -20,6 +21,7 @@ const Header = () => {
 const StyledHeader = styled.header`
   display: flex;
   height: 55px;
+  padding: 0 20px;
   align-items: center;
   background-color: ${({ theme }) => theme.color.white};
 
@@ -29,11 +31,11 @@ const StyledHeader = styled.header`
     align-items: center;
   }
 
-  text {
+  .text {
     margin-right: 10px;
   }
 
-  img {
+  .img {
     width: 40px;
     height: 40px;
   }
