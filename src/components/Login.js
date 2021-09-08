@@ -1,9 +1,10 @@
 import firebase from "../config/firebase";
-import { useQuery, useMutation, queryClient } from "react-query";
+import { useHistory } from "react-router-dom";
+import { useMutation } from "react-query";
 
 import styled from "styled-components";
 
-const postUser = async (user) => {
+const postLogin = async (user) => {
   const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/login`, {
     method: "POST",
     credentials: "include",
@@ -21,18 +22,15 @@ const postUser = async (user) => {
   return response.json();
 };
 
-const Login = () => {
-  const query = useQuery("user");
-  const mutation = useMutation(postUser, {
-    onSuccess: () => {
-      window.location.href = "/";
-    },
-    onMutate: (userInfo) => {
-      queryClient.setQueryData("user", userInfo);
+const Login = ({ onSuccess }) => {
+  const history = useHistory();
+
+  const { mutate } = useMutation(postLogin, {
+    onSuccess: (userInfo) => {
+      onSuccess(userInfo.user[0]);
+      history.push("/");
     },
   });
-
-  const { isLoading, isError, error, isSuccess, data } = mutation;
 
   const loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -46,13 +44,13 @@ const Login = () => {
       user_type: "pharmacist",
     };
 
-    mutation.mutate(userData);
+    mutate(userData);
   };
 
   return (
     <StyledLogin>
       <div>
-        <h2 class="sr-only">Login</h2>
+        <h2 className="sr-only">Login</h2>
 
         <strong>Welcome back!</strong>
         <p>Sign in to your account to continue</p>

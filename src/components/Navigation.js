@@ -1,9 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import styled from "styled-components";
 
-const Navigation = () => {
+const Navigation = ({ isLoggedIn, setUser }) => {
+  const history = useHistory();
+
+  const handleLogout = async (event) => {
+    event.preventDefault();
+
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    const { result } = await response.json();
+
+    if (result === "success") {
+      setUser("");
+      history.push("/login");
+    }
+  };
+
   return (
     <StyledNavigation>
       <h1 className="logo"><Link to="/">MEDI-READY</Link></h1>
@@ -14,7 +36,13 @@ const Navigation = () => {
           <li><Link to="/prescription">Prescription</Link></li>
           <li><Link to="/history">History</Link></li>
           <li><Link to="/settings">Settings</Link></li>
-          <li><Link to="/logout">Logout</Link></li>
+          <li>
+            { isLoggedIn ? (
+              <a href="#" onClick={handleLogout}>Logout</a>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </li>
         </ul>
       </nav>
     </StyledNavigation>

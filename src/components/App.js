@@ -1,8 +1,8 @@
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import styled, { ThemeProvider } from "styled-components";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import GlobalStyles from "../styles";
 import theme from "../styles/theme";
@@ -19,53 +19,71 @@ import { ModalProvider } from "../contexts/ModalContext";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const [user, setUser] = useState("");
+  const history = useHistory();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth-check`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      const { result, userInfo } = await response.json();
+
+      if (result === "success") {
+        setUser(userInfo);
+        history.push("/");
+      } else {
+        setUser("");
+        history.push("/login");
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
-          <Navigation />
-
+          <Navigation isLoggedIn={user} setUser={setUser} />
           <Section>
             <Header />
-
             <Article>
               <ModalProvider>
                 <Switch>
                   <Route path="/dashboard">
                     <DashboardList />
                   </Route>
-
                   <Route path="/prescription">
                     <Prescription />
                   </Route>
-
                   <Route path="/history">
                     <History />
                   </Route>
-
                   <Route path="/history/:id">
 
                   </Route>
-
                   <Route path="/settings">
                     <Settings />
                   </Route>
-
                   <Route path="/login">
-                    <Login />
+                    <Login onSuccess={setUser} />
                   </Route>
-
                   <Route path="/" exact>
                     <Redirect to="/dashboard" />
                   </Route>
                 </Switch>
               </ModalProvider>
             </Article>
-
             <Footer />
           </Section>
-
         </QueryClientProvider>
       </ThemeProvider>
     </Wrapper>
