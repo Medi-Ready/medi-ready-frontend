@@ -16,6 +16,10 @@ Button.propTypes = {
   text: PropTypes.string.isRequired,
 };
 
+Button.defaultProps = {
+  type: "submit",
+};
+
 const DefaultButton = styled.button`
   display: inline-block;
   min-width: 80px;

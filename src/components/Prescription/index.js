@@ -54,8 +54,8 @@ const Prescription = () => {
                   <input type="checkbox" id="beforeBed" name="time" />
                 </Checkbox>
               </CheckboxList>
-              <Button type="button" text="Add" />
 
+              <Button type="button" text="Add" />
             </div>
           </FlexBox>
 
