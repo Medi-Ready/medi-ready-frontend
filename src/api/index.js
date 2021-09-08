@@ -17,7 +17,6 @@ export const getAuthCheck = async () => {
   } catch (error) {
 
   }
-
 };
 
 export const postLogin = async (user) => {
