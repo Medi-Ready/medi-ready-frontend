@@ -9,15 +9,15 @@ const DashboardList = () => {
       <Dashboard
         src="/icon-chart.png"
         color="#EAEDFA"
-        number="101"
-        string="Total Visitis"
+        number={101}
+        text="Total Visitis"
       />
 
       <Dashboard
         src="/icon-file.png"
         color="#FEF8ED"
-        number="135"
-        string="Total Prescriptions"
+        number={135}
+        text="Total Prescriptions"
       />
     </>
   );
