@@ -1,8 +1,8 @@
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import styled, { ThemeProvider } from "styled-components";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import GlobalStyles from "../styles";
 import theme from "../styles/theme";
@@ -13,58 +13,68 @@ import Login from "./Login";
 import History from "./History";
 import Settings from "./Settings";
 import DashboardList from "./DashboardList";
-import Prescription from "./Prescription";
+import Prescription from "../components/Prescription";
 import { ModalProvider } from "../contexts/ModalContext";
+import { getAuthCheck } from "../api";
 
 const queryClient = new QueryClient();
 
 const App = () => {
+  const [user, setUser] = useState("");
+  const history = useHistory();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const { data, result } = await getAuthCheck();
+
+      if (result === "success") {
+        setUser(data);
+      } else {
+        setUser("");
+        history.push("/login");
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
-          <Navigation />
-
+          <Navigation isLoggedIn={user} onLogout={setUser} />
           <Section>
             <Header userInfo={user} />
             <Article>
               <ModalProvider>
                 <Switch>
                   <Route path="/dashboard">
-                    <DashboardList />
+                    <DashboardList userInfo={user} />
                   </Route>
-
-                  <Route path="/prescription">
+                  <Route path="/prescription" userInfo={user}>
                     <Prescription />
                   </Route>
-
-                  <Route path="/history">
+                  <Route path="/prescriptions">
                     <History />
                   </Route>
-
-                  <Route path="/history/:id">
+                  <Route path="/prescriptions/:id">
 
                   </Route>
-
                   <Route path="/settings">
                     <Settings />
                   </Route>
-
                   <Route path="/login">
-                    <Login />
+                    <Login onSuccess={setUser} />
                   </Route>
-
                   <Route path="/" exact>
                     <Redirect to="/dashboard" />
                   </Route>
                 </Switch>
               </ModalProvider>
             </Article>
-
             <Footer />
           </Section>
-
         </QueryClientProvider>
       </ThemeProvider>
     </Wrapper>
