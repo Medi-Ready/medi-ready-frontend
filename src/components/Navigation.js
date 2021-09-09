@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { postLogout } from "../api";
 
-const Navigation = ({ isLoggedIn, setUser }) => {
+const Navigation = ({ isLoggedIn, onLogout }) => {
   const history = useHistory();
 
   const handleLogout = async (event) => {
@@ -14,7 +14,7 @@ const Navigation = ({ isLoggedIn, setUser }) => {
     const { result } = await postLogout();
 
     if (result === "success") {
-      setUser("");
+      onLogout("");
       history.push("/login");
     }
   };
