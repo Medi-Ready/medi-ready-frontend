@@ -27,8 +27,7 @@ const App = () => {
           <Navigation />
 
           <Section>
-            <Header />
-
+            <Header userInfo={user} />
             <Article>
               <ModalProvider>
                 <Switch>
