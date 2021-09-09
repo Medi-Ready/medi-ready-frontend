@@ -10,7 +10,7 @@ const DashboardList = ({ userInfo }) => {
 
   useEffect(() => {
     const goToURL = async () => {
-      const fetchUrl = await QRCode.toDataURL(`${process.env.REACT_APP_BASE_URL}/api/qrcode/${user_id}`);
+      const fetchUrl = await QRCode.toDataURL(`${user_id}`);
 
       setSrc(fetchUrl);
     };
@@ -53,8 +53,8 @@ const QRCodeBox = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
 
   img {
     max-width: 100%;
