@@ -45,7 +45,7 @@ const App = () => {
           <GlobalStyles />
           <Navigation isLoggedIn={user} onLogout={setUser} />
           <Section>
-            <Header />
+            <Header userInfo={user} />
             <Article>
               <ModalProvider>
                 <Switch>

@@ -2,23 +2,25 @@ import React from "react";
 
 import styled from "styled-components";
 
-const Header = () => {
+const Header = ({ userInfo }) => {
+  const { name, picture } = userInfo;
+
   return (
-    <StyledHeader>
+    <Wrapper>
       <div>
-        <span className="text">Welcome, 유저이름</span>
-        <span className="img">
+        <Text>Welcome, {name}</Text>
+        <ImageBox>
           <img
-            alt="유저이름"
-            src="https://avatars.githubusercontent.com/u/60248910?v=4"
+            alt={name}
+            src={picture}
           />
-        </span>
+        </ImageBox>
       </div>
-    </StyledHeader>
+    </Wrapper>
   );
 };
 
-const StyledHeader = styled.header`
+const Wrapper = styled.header`
   display: flex;
   height: 55px;
   padding: 0 20px;
@@ -30,14 +32,20 @@ const StyledHeader = styled.header`
     margin-left: auto;
     align-items: center;
   }
+`;
 
-  .text {
-    margin-right: 10px;
-  }
+const Text = styled.span`
+  margin-right: 10px;
+  font-size: 14px;
+`;
 
-  .img {
-    width: 40px;
-    height: 40px;
+const ImageBox = styled.span`
+  width: 40px;
+  height: 40px;
+
+  img {
+    object-fit: cover;
+    border-radius: 50%;
   }
 `;
 
