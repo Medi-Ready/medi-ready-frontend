@@ -1,65 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import QRCode from "qrcode";
 
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Dashboard = ({ src, color, number, text }) => {
+import Dashboard from "./Shared/Dashboard";
+
+const DashboardList = ({ userInfo }) => {
+  const [qrUrl, setQrUrl] = useState("");
+  const { user_id } = userInfo;
+
+  useEffect(() => {
+    const goToURL = async () => {
+      const fetchUrl = await QRCode.toDataURL(String(user_id));
+
+      setQrUrl(fetchUrl);
+    };
+
+    goToURL();
+  }, [qrUrl]);
+
   return (
-    <Wrapper src={src} color={color}>
-      <div>
-        <em>{number}</em>
-        <span>{text}</span>
-      </div>
+    <Wrapper>
+      <h2>Dashboard</h2>
+
+      <Dashboard
+        src="/icon-chart.png"
+        color="#EAEDFA"
+        number={101}
+        text="Total Visitis"
+      />
+
+      <Dashboard
+        src="/icon-file.png"
+        color="#FEF8ED"
+        number={135}
+        text="Total Prescriptions"
+      />
+
+      <QRCodeBox>
+        <img src={qrUrl} />
+      </QRCodeBox>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  display: inline-block;
-  padding: 30px 10px;
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+`;
 
-  div {
-    position: relative;
-    min-width: 250px;
-    padding: 35px 20px 35px 78px;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-    box-sizing: border-box;
-  }
+const QRCodeBox = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  height: 300px;
 
-  div:before {
-    content: "";
-    display: block;
-    position: absolute;
-    border-radius: 50%;
-    top: calc(50% - 23px);
-    left: 18px;
-    padding: 24px;
-    background: ${(props) => props.color} url(${(props) => props.src}) no-repeat center;
-  }
-
-  div > * {
-    display: block;
-  }
-
-  em {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  span {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #B9B9B9;
+  img {
+    max-width: 100%;
   }
 `;
 
-Dashboard.propTypes = {
-  src: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-};
-
-export default Dashboard;
+export default DashboardList;
