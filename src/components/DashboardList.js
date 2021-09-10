@@ -6,14 +6,14 @@ import styled from "styled-components";
 import Dashboard from "./Shared/Dashboard";
 
 const DashboardList = ({ userInfo }) => {
-  const [qrUrl, setQrSrc] = useState("");
+  const [qrUrl, setQrUrl] = useState("");
   const { user_id } = userInfo;
 
   useEffect(() => {
     const goToURL = async () => {
       const fetchUrl = await QRCode.toDataURL(String(user_id));
 
-      setQrSrc(fetchUrl);
+      setQrUrl(fetchUrl);
     };
 
     goToURL();
