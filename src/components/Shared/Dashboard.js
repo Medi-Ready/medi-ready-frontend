@@ -5,16 +5,16 @@ import styled from "styled-components";
 
 const Dashboard = ({ src, color, number, text }) => {
   return (
-    <StyledDashboard src={src} color={color}>
+    <Wrapper src={src} color={color}>
       <div>
         <em>{number}</em>
         <span>{text}</span>
       </div>
-    </StyledDashboard>
+    </Wrapper>
   );
 };
 
-const StyledDashboard = styled.div`
+const Wrapper = styled.div`
   display: inline-block;
   padding: 30px 10px;
 
