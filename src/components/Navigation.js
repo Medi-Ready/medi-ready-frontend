@@ -20,8 +20,8 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
   };
 
   return (
-    <StyledNavigation>
-      <h1 className="logo"><Link to="/">MEDI-READY</Link></h1>
+    <Wrapper>
+      <Logo><Link to="/">MEDI-READY</Link></Logo>
 
       <nav>
         <ul>
@@ -38,28 +38,15 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
           </li>
         </ul>
       </nav>
-    </StyledNavigation>
+    </Wrapper>
   );
 };
 
-const StyledNavigation = styled.nav`
+const Wrapper = styled.nav`
   width: 230px;
   padding: ${({ theme }) => theme.padding.default};
   background-color: ${({ theme }) => theme.color.blue};
   box-sizing: border-box;
-
-  .logo a {
-    display: block;
-    width: 100%;
-    height: 50px;
-    padding-left: 60px;
-    background: url("./logo.png") no-repeat;
-    color: ${({ theme }) => theme.color.white};
-    font-weight: 600;
-    line-height: 50px;
-    letter-spacing: 0.03em;
-    box-sizing: border-box;
-  }
 
   nav {
     margin-top: 15px;
@@ -67,16 +54,29 @@ const StyledNavigation = styled.nav`
     border-top: 1px solid #1771f8;
     font-weight: 400;
     letter-spacing: 0.04em;
-  }
 
-  nav li {
-    padding: 10px 0;
-    font-size: 15px;
-  }
+    * {
+      color: ${({ theme }) => theme.color.white}
+    };
 
-  nav * {
-    color: ${({ theme }) => theme.color.white};
+    li {
+      padding: 10px 0;
+      font-size: 15px;
+    }
   }
+`;
+
+const Logo = styled.h1`
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding-left: 60px;
+  background: url("./logo.png") no-repeat;
+  color: ${({ theme }) => theme.color.white};
+  font-weight: 600;
+  line-height: 50px;
+  letter-spacing: 0.03em;
+  box-sizing: border-box;
 `;
 
 export default Navigation;

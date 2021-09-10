@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     const checkLoginStatus = async () => {
-      const { result, data } = await getAuthCheck();
+      const { data, result } = await getAuthCheck();
 
       if (result === "success") {
         setUser(data);
@@ -45,14 +45,14 @@ const App = () => {
           <GlobalStyles />
           <Navigation isLoggedIn={user} onLogout={setUser} />
           <Section>
-            <Header />
+            <Header userInfo={user} />
             <Article>
               <ModalProvider>
                 <Switch>
                   <Route path="/dashboard">
-                    <DashboardList />
+                    <DashboardList userInfo={user} />
                   </Route>
-                  <Route path="/prescription">
+                  <Route path="/prescription" userInfo={user}>
                     <Prescription />
                   </Route>
                   <Route path="/prescriptions">
