@@ -64,7 +64,7 @@ const Prescription = () => {
               <TextInput />
             </div>
             <InputButtonBox>
-              <TextInput width="60px" />
+              <TextInput width="60px" label="복약지도" name="duration" />
               <span>일치</span>
               <Button type="submit" text="처방" />
             </InputButtonBox>

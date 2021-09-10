@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 const Footer = () => {
   return (
-    <StyledFooter>2021 © Medi-Ready - medi-ready.com</StyledFooter>
+    <Wrapper>2021 © Medi-Ready - medi-ready.com</Wrapper>
   );
 };
 
-const StyledFooter = styled.footer`
+const Wrapper = styled.footer`
   padding: 23px;
   border-top: 1px solid #E0E1EA;
   font-size: 13px;
