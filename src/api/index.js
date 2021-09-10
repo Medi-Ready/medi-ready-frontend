@@ -61,3 +61,16 @@ export const postLogout = async () => {
 
   }
 };
+
+export const getQueue = async () => {
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/queue`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await response.json();
+};

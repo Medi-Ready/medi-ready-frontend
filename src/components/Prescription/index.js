@@ -1,67 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 
 import styled from "styled-components";
-import WaitingList from "./WaitingList";
+
+import Queue from "./Queue";
 import FlexBox from "../Shared/FlexBox";
 import TextInput from "../Shared/TextInput";
 import Button from "../Shared/Button";
 
+import { getQueue } from "../../api";
+
 const Prescription = () => {
-  const handleSubmit = async () => {
+  const [targetUserInfo, setTargetUserInfo] = useState("");
+  const { name, picture } = targetUserInfo;
+
+  const { data, refetch, isLoading } = useQuery("queue", getQueue);
+
+  const handleRefresh = () => {
+    refetch();
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
 
   return (
     <>
-      <h2>Prescription</h2>
+      <FlexBox>
+        <h2>Prescription</h2>
+        <ButtonRight>
+          <button type="button" onClick={handleRefresh}>Refresh</button>
+        </ButtonRight>
+      </FlexBox>
 
       <Wrapper>
         <form onSubmit={handleSubmit}>
           <FlexBox>
             <div>
               <UserInfo>
-                <b>Kathryn Murphy</b>
-                <span>1995.05.24</span>
-                <Badge color="green">Treating</Badge>
+                <span>
+                  <img src={picture} alt={name} />
+                </span>
+                <b>{name}</b>
+                {
+                  name && (
+                    <Badge color="green">Treating</Badge>
+                  )
+                }
               </UserInfo>
-              <TextInput label="search" placeholder="Enter Medicine Name" />
+              <TextInput label="search" name="search" placeholder="Enter Medicine Name" />
             </div>
 
             <div>
               <CheckboxList>
                 <Checkbox>
                   <label htmlFor="all">전체</label>
-                  <input type="checkbox" id="all" name="time" />
+                  <input type="checkbox" id="all" name="doseTime" />
                 </Checkbox>
 
                 <Checkbox>
                   <label htmlFor="morning">아침</label>
-                  <input type="checkbox" id="morning" name="time" />
+                  <input type="checkbox" id="morning" name="doseTime" />
                 </Checkbox>
 
                 <Checkbox>
                   <label htmlFor="lunch">점심</label>
-                  <input type="checkbox" id="lunch" name="time" />
+                  <input type="checkbox" id="lunch" name="doseTime" />
                 </Checkbox>
 
                 <Checkbox>
                   <label htmlFor="dinner">저녁</label>
-                  <input type="checkbox" id="dinner" name="time" />
+                  <input type="checkbox" id="dinner" name="doseTime" />
                 </Checkbox>
 
                 <Checkbox>
                   <label htmlFor="beforeBed">취침전</label>
-                  <input type="checkbox" id="beforeBed" name="time" />
+                  <input type="checkbox" id="beforeBed" name="doseTime" />
                 </Checkbox>
               </CheckboxList>
-
               <Button type="button" text="Add" />
             </div>
           </FlexBox>
 
           <FlexBox>
             <div>
-              <TextInput />
+              <TextInput label="약" name="medicine" />
             </div>
             <InputButtonBox>
               <TextInput width="60px" label="복약지도" name="duration" />
@@ -72,9 +95,17 @@ const Prescription = () => {
         </form>
       </Wrapper>
 
-      <Wrapper>
-        <WaitingList Badge={Badge} />
-      </Wrapper>
+      {
+        !isLoading && (
+          <Wrapper>
+            <Queue
+              Badge={Badge}
+              queue={data}
+              targetUser={targetUserInfo}
+              setTargetUserInfo={setTargetUserInfo} />
+          </Wrapper>
+        )
+      }
     </>
   );
 };
@@ -84,6 +115,7 @@ const Wrapper = styled.div`
   padding: ${({ theme }) => theme.padding.default};
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.white};
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 `;
 
 const CheckboxList = styled.ul`
@@ -95,7 +127,7 @@ const CheckboxList = styled.ul`
   vertical-align: top;
 
   + button {
-    margin: 5px 0 0 20px;
+    margin: 37px 0 0 20px;
     vertical-align: top;
   }
 `;
@@ -117,7 +149,7 @@ const Checkbox = styled.li`
     position: relative;
     width: 22px;
     height: 22px;
-    margin-top: 15px;
+    margin-top: 16px;
     border-radius: 3px;
     background: #dcdcdd;
     -webkit-appearance: none;
@@ -162,14 +194,23 @@ const UserInfo = styled.div`
   padding-bottom: 20px;
 
   b {
+    display: inline-block;
+    margin-left: 12px;
     font-size: 18px;
     font-weight: 600;
   }
 
   span {
     display: inline-block;
-    margin-left: 20px;
     font-size: 12px;
+
+    img {
+        display: inline-block;
+        width: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+        vertical-align: middle;
+      }
   }
 
   em {
@@ -193,6 +234,10 @@ const InputButtonBox = styled.div`
   > * {
     margin-left: 20px;
   }
+`;
+
+const ButtonRight = styled.div`
+  text-align: right;
 `;
 
 export default Prescription;
