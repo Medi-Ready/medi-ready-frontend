@@ -3,10 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const TextInput = ({ label, width, placeholder }) => {
+const TextInput = ({ label, width, name, placeholder }) => {
   return (
     <label htmlFor={label} >
-      <Input type="text" width={width} placeholder={placeholder} />
+      <Input type="text" width={width} name={name} placeholder={placeholder} />
     </label>
   );
 };
@@ -22,13 +22,14 @@ const Input = styled.input`
   line-height: 45px;
 `;
 
-Input.propTypes = {
+TextInput.propTypes = {
   label: PropTypes.string.isRequired,
   width: PropTypes.string,
+  name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
 };
 
-Input.defaultProps = {
+TextInput.defaultProps = {
   width: "100%",
 };
 

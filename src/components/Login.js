@@ -11,9 +11,9 @@ const Login = ({ onSuccess }) => {
 
   const { mutate } = useMutation(postLogin, {
     onSuccess: (result) => {
-      const { user } = result.data;
+      const user = result;
 
-      onSuccess(user[0]);
+      onSuccess(user);
       history.push("/");
     },
   });
