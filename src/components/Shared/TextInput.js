@@ -3,10 +3,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const TextInput = ({ label, width, name, placeholder }) => {
+const TextInput = ({ label, width, name, placeholder, value, disabled }) => {
   return (
     <label htmlFor={label} >
-      <Input type="text" width={width} name={name} placeholder={placeholder} />
+      <Input type="text"
+        id={label}
+        width={width}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        disabled={disabled}
+      />
     </label>
   );
 };
@@ -23,10 +30,12 @@ const Input = styled.input`
 `;
 
 TextInput.propTypes = {
-  label: PropTypes.string.isRequired,
   width: PropTypes.string,
-  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
   placeholder: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 TextInput.defaultProps = {
