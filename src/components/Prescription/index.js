@@ -1,28 +1,118 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 
 import styled from "styled-components";
+
+import { getQueue, postMedicine, postPrescription } from "../../api";
 
 import Queue from "./Queue";
 import FlexBox from "../Shared/FlexBox";
 import TextInput from "../Shared/TextInput";
 import Button from "../Shared/Button";
-
-import { getQueue } from "../../api";
+import Checkbox from "../Shared/Checkbox";
 
 const Prescription = () => {
-  const [targetUserInfo, setTargetUserInfo] = useState("");
-  const { name, picture } = targetUserInfo;
+  const [doseTime, setDoseTime] = useState([]);
+  const [medicine, setMedicine] = useState("");
+  const [medicineList, setMedicineList] = useState([]);
+  const [targetUserInfo, setTargetUserInfo] = useState({});
+  const [isSubmitForm, setIsSubmitForm] = useState(false);
 
+  const { name, picture } = targetUserInfo;
   const { data, refetch, isLoading } = useQuery("queue", getQueue);
+
+  const medicineMutation = useMutation(postMedicine, {
+    onSuccess: (result) => {
+      const { data } = result;
+
+      if (data) {
+        setMedicine(data);
+        setMedicineList(prevItems => [...prevItems, {
+          id: data.medicine_id,
+          name: data.name,
+        }]);
+      }
+    },
+  }, {
+    manual: true,
+    enabled: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const prescriptionMutation = useMutation(postPrescription, {
+    onSuccess: (result) => {
+      const { data } = result;
+    },
+  }, {
+    manual: true,
+    enabled: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+
+    medicineMutation.mutate({ name: event.target.search.value });
+
+    event.target.search.value = "";
+  };
 
   const handleRefresh = () => {
     refetch();
   };
 
+  const handleChange = (event) => {
+    const { id, checked } = event.target;
+    setDoseTime([...doseTime, id]);
+
+    if (!checked) {
+      setDoseTime(doseTime.filter(item => item !== id));
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    setIsSubmitForm(true);
+
+    const { duration, description } = event.target;
+
+    const medicineIdList = medicineList.map(({ id }) => id);
+
+    const prescriptionForm = {
+      doseTime,
+      date: new Date().toISOString(),
+      duration: duration.value,
+      medicines: medicineIdList,
+      description: description.value,
+      patient_id: targetUserInfo.patient_id,
+    };
+
+    prescriptionMutation.mutate(prescriptionForm);
+
+    duration.value = "";
+    description.value = "";
+    setMedicineList([]);
+    setDoseTime([]);
   };
+
+  const doseTimeDatas = [
+    { id: "morning", label: "아침", name: "doseTime" },
+    { id: "lunch", label: "점심", name: "doseTime" },
+    { id: "dinner", label: "저녁", name: "doseTime" },
+    { id: "beforeBed", label: "취침전", name: "doseTime" },
+  ];
+
+  const doseTimeList = doseTimeDatas.map(({ id, label, name }) => {
+    return (
+      <Checkbox
+        id={id}
+        name={name}
+        label={label}
+        onChange={handleChange}
+      />
+    );
+  });
 
   return (
     <>
@@ -34,60 +124,50 @@ const Prescription = () => {
       </FlexBox>
 
       <Wrapper>
+        <FlexBox>
+          <div>
+            <UserInfo>
+              <span>
+                <img src={picture} alt={name} />
+              </span>
+              <b>{name}</b>
+              {name && (
+                <Badge color="green">Treating</Badge>
+              )}
+            </UserInfo>
+
+            <form onSubmit={handleSearch}>
+              <SearchBox>
+                <TextInput label="search" name="search" placeholder="Enter Medicine Name" />
+                <Button type="submit" text="Search" />
+                <div>
+                  {medicineList.map((item, i) => (
+                    <TextInput
+                      label={`medicine${i}`}
+                      value={item.name.slice(0, 35) + "…"}
+                      name="medicine"
+                      disabled />
+                  ))}
+                </div>
+              </SearchBox>
+            </form>
+          </div>
+
+          <div>
+            <CheckboxList>
+              {doseTimeList}
+            </CheckboxList>
+          </div>
+        </FlexBox>
+
         <form onSubmit={handleSubmit}>
           <FlexBox>
             <div>
-              <UserInfo>
-                <span>
-                  <img src={picture} alt={name} />
-                </span>
-                <b>{name}</b>
-                {
-                  name && (
-                    <Badge color="green">Treating</Badge>
-                  )
-                }
-              </UserInfo>
-              <TextInput label="search" name="search" placeholder="Enter Medicine Name" />
+              <TextInput label="description" name="description" />
             </div>
 
-            <div>
-              <CheckboxList>
-                <Checkbox>
-                  <label htmlFor="all">전체</label>
-                  <input type="checkbox" id="all" name="doseTime" />
-                </Checkbox>
-
-                <Checkbox>
-                  <label htmlFor="morning">아침</label>
-                  <input type="checkbox" id="morning" name="doseTime" />
-                </Checkbox>
-
-                <Checkbox>
-                  <label htmlFor="lunch">점심</label>
-                  <input type="checkbox" id="lunch" name="doseTime" />
-                </Checkbox>
-
-                <Checkbox>
-                  <label htmlFor="dinner">저녁</label>
-                  <input type="checkbox" id="dinner" name="doseTime" />
-                </Checkbox>
-
-                <Checkbox>
-                  <label htmlFor="beforeBed">취침전</label>
-                  <input type="checkbox" id="beforeBed" name="doseTime" />
-                </Checkbox>
-              </CheckboxList>
-              <Button type="button" text="Add" />
-            </div>
-          </FlexBox>
-
-          <FlexBox>
-            <div>
-              <TextInput label="약" name="medicine" />
-            </div>
             <InputButtonBox>
-              <TextInput width="60px" label="복약지도" name="duration" />
+              <TextInput width="60px" label="duration" name="duration" />
               <span>일치</span>
               <Button type="submit" text="처방" />
             </InputButtonBox>
@@ -95,17 +175,15 @@ const Prescription = () => {
         </form>
       </Wrapper>
 
-      {
-        !isLoading && (
-          <Wrapper>
-            <Queue
-              Badge={Badge}
-              queue={data}
-              targetUser={targetUserInfo}
-              setTargetUserInfo={setTargetUserInfo} />
-          </Wrapper>
-        )
-      }
+      {!isLoading && (
+        <Wrapper>
+          <Queue
+            Badge={Badge}
+            queue={data}
+            targetUser={targetUserInfo}
+            setTargetUserInfo={setTargetUserInfo} />
+        </Wrapper>
+      )}
     </>
   );
 };
@@ -125,68 +203,6 @@ const CheckboxList = styled.ul`
   max-width: 450px;
   padding-left: 15px;
   vertical-align: top;
-
-  + button {
-    margin: 37px 0 0 20px;
-    vertical-align: top;
-  }
-`;
-
-const Checkbox = styled.li`
-  min-width: 60px;
-  text-align: center;
-
-  label {
-    overflow: hidden;
-    display: block;
-    min-height: 22px;
-    font-size: 14px;
-    line-height: 1;
-    box-sizing: border-box;
-  }
-
-  input {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    margin-top: 16px;
-    border-radius: 3px;
-    background: #dcdcdd;
-    -webkit-appearance: none;
-  }
-
-  input:checked {
-    border-color: #665196 !important;
-    background: #fff;
-  }
-
-  input[type=checkbox]:checked {
-    background: #057bff;
-  }
-
-  input:before {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-color: #fff;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
-
-  input[type=checkbox]:before {
-    width: 11px;
-    height: 4px;
-    margin: -5px 0 0 -7px;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-  }
-
-  input[type=checkbox]:checked:before {
-    content: "";
-    border: solid #fff;
-    border-width: 0 0 2px 2px;
-  }
 `;
 
 const UserInfo = styled.div`
@@ -217,6 +233,19 @@ const UserInfo = styled.div`
     position: absolute;
     top: 0;
     right: 0;
+  }
+`;
+
+const SearchBox = styled.div`
+  position: relative;
+
+  button {
+    position: absolute;
+    right: 0;
+  }
+
+  div input {
+    margin-top: 10px;
   }
 `;
 
