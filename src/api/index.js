@@ -14,7 +14,9 @@ export const getAuthCheck = async () => {
     }
 
     return await response.json();
-  } catch (error) {}
+  } catch (error) {
+
+  }
 };
 
 export const postLogin = async (user) => {
@@ -23,8 +25,8 @@ export const postLogin = async (user) => {
       method: "POST",
       credentials: "include",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(user),
     });
@@ -34,7 +36,9 @@ export const postLogin = async (user) => {
     }
 
     return response.json();
-  } catch (error) {}
+  } catch (error) {
+
+  }
 };
 
 export const postLogout = async () => {
@@ -43,8 +47,8 @@ export const postLogout = async () => {
       method: "POST",
       credentials: "include",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
     });
 
@@ -53,7 +57,9 @@ export const postLogout = async () => {
     }
 
     return await response.json();
-  } catch (error) {}
+  } catch (error) {
+
+  }
 };
 
 export const getQueue = async () => {

@@ -18,6 +18,8 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
       history.push("/login");
     }
   };
+  const OFFSET = 0;
+  const LIMIT = 3;
 
   return (
     <Wrapper>
@@ -25,13 +27,23 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
 
       <nav>
         <ul>
-          <li><Link to="/">Dashboard</Link></li>
-          <li><Link to="/prescription">Prescription</Link></li>
-          <li><Link to="/history">History</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
+          <li>
+            <Link to="/">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/prescription">Prescription</Link>
+          </li>
+          <li>
+            <Link to={`/prescriptions?offset=${OFFSET}?limit=${LIMIT}`}>History</Link>
+          </li>
+          <li>
+            <Link to="/settings">Settings</Link>
+          </li>
           <li>
             {isLoggedIn ? (
-              <a href="#" onClick={handleLogout}>Logout</a>
+              <a href="#" onClick={handleLogout}>
+                Logout
+              </a>
             ) : (
               <Link to="/login">Login</Link>
             )}
