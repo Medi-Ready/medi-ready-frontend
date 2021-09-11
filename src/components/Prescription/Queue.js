@@ -3,7 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Queue = ({ Badge, queue, targetUser, setTargetUserInfo }) => {
+import Badge from "../Shared/Badge";
+
+const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
   const { data } = queue;
 
   const handleUser = (event) => {
@@ -61,7 +63,6 @@ const Queue = ({ Badge, queue, targetUser, setTargetUserInfo }) => {
 
 Queue.propTypes = {
   queue: PropTypes.object.isRequired,
-  Badge: PropTypes.object.isRequired,
   setTargetUserInfo: PropTypes.func.isRequired,
 };
 
