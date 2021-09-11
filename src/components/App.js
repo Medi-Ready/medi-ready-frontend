@@ -2,20 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import styled, { ThemeProvider } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
 
-import GlobalStyles from "../styles";
-import theme from "../styles/theme";
+import { getAuthCheck } from "../api";
+import { ModalProvider } from "../contexts/ModalContext";
+
+import Login from "./Login";
 import Header from "./Header";
 import Footer from "./Footer";
-import Navigation from "./Navigation";
-import Login from "./Login";
 import History from "./History";
 import Settings from "./Settings";
+import theme from "../styles/theme";
+import GlobalStyles from "../styles";
+import Navigation from "./Navigation";
 import DashboardList from "./DashboardList";
 import Prescription from "../components/Prescription";
-import { ModalProvider } from "../contexts/ModalContext";
-import { getAuthCheck } from "../api";
 
 const queryClient = new QueryClient();
 
