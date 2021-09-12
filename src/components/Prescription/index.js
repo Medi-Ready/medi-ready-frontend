@@ -1,34 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useQuery, useMutation } from "react-query";
 
 import styled from "styled-components";
 
 import { getQueue, postMedicine, postPrescription } from "../../api";
 
+import { ModalContext } from "../../contexts/ModalContext";
+
 import Queue from "./Queue";
 import Badge from "../Shared/Badge";
 import Button from "../Shared/Button";
 import FlexBox from "../Shared/FlexBox";
 import Checkbox from "../Shared/Checkbox";
+import TextArea from "../Shared/TextArea";
 import TextInput from "../Shared/TextInput";
+import ConfirmModal from "../Shared/Modal/ConfirmModal";
 
 const Prescription = () => {
   const [message, setMessage] = useState("");
   const [medicine, setMedicine] = useState("");
+  const [duration, setDuration] = useState("");
+  const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [medicineList, setMedicineList] = useState([]);
   const [doseTimeList, setDoseTimeList] = useState([]);
   const [targetUserInfo, setTargetUserInfo] = useState({});
+  const [isPrescriptionSubmit, setIsPrescriptionSubmit] = useState(false);
 
+  const { handleModal } = useContext(ModalContext);
   const { name, picture } = targetUserInfo;
+
+  useEffect(() => {
+    setDoseTimeList(doseTimeDataList);
+  }, []);
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [duration, description, targetUserInfo, medicineList, doseTimeList]);
+
+  const onChangeHanlder = (event, setState) => {
+    setState(event.target.value);
+  };
 
   const { data, isLoading } = useQuery("queue", getQueue, {
     refetchInterval: 3000,
   });
-
-  useEffect(() =>
-    setDoseTimeList(doseTimeDataList), [],
-  );
 
   const medicineMutation = useMutation(postMedicine, {
     onSuccess: (result) => {
@@ -40,26 +56,34 @@ const Prescription = () => {
           id: data.medicine_id,
           name: data.name,
         }]);
+      } else {
+        setErrorMessage("해당 약은 존재하지 않습니다.");
       }
     },
-  }, {
-    manual: true,
-    enabled: false,
-    refetchOnWindowFocus: false,
   });
 
   const prescriptionMutation = useMutation(postPrescription, {
-    onSuccess: (result) => {
-      setMessage("처방전 전송이 완료되었습니다.");
+    onSuccess: ({ result }) => {
+      if (result === "success") {
+        setMessage("처방전 전송이 완료되었습니다.");
+      }
     },
-  }, {
-    manual: true,
-    enabled: false,
-    refetchOnWindowFocus: false,
   });
 
   const handleSearch = (event) => {
     event.preventDefault();
+
+    const { search } = event.target;
+
+    if (!targetUserInfo.name) {
+      setErrorMessage("대기 환자를 선택해주세요.");
+      return;
+    }
+
+    if (!search.value) {
+      setErrorMessage("검색어를 입력해주세요.");
+      return;
+    }
 
     medicineMutation.mutate({ name: event.target.search.value });
 
@@ -87,7 +111,6 @@ const Prescription = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const { duration, description } = event.target;
     const doseTimes = [];
 
     for (const doseTime of doseTimeList) {
@@ -96,13 +119,15 @@ const Prescription = () => {
       }
     }
 
-    if (!targetUserInfo) {
+    const medicineIdList = medicineList.map(({ id }) => id);
+
+    if (!targetUserInfo.name) {
       setErrorMessage("대기 환자를 선택해주세요.");
       return;
     }
 
-    if (!doseTimes.length) {
-      setErrorMessage("복용 시간을 체크해주세요.");
+    if (!medicineList.length) {
+      setErrorMessage("처방할 약을 추가해주세요.");
       return;
     }
 
@@ -111,35 +136,42 @@ const Prescription = () => {
       return;
     }
 
-    if (!description.value) {
+    if (!doseTimes.length) {
+      setErrorMessage("복용 시간을 체크해주세요.");
+      return;
+    }
+
+    if (!description) {
       setErrorMessage("복약지도는 필수 항목입니다.");
       return;
     }
 
-    if (!duration.value) {
+    if (!duration) {
       setErrorMessage("복용기간을 입력해주세요.");
       return;
     }
 
-    const medicineIdList = medicineList.map(({ id }) => id);
+    handleModal(<ConfirmModal setIsPrescriptionSubmit={setIsPrescriptionSubmit} />);
 
     const prescriptionForm = {
       doseTimes,
-      duration: duration.value,
+      duration,
+      description,
       medicines: medicineIdList,
       date: new Date().toISOString(),
-      description: description.value,
       patient_id: targetUserInfo.patient_id,
     };
 
-    prescriptionMutation.mutate(prescriptionForm);
-
-    duration.value = "";
-    description.value = "";
-
-    setMedicineList([]);
-    setTargetUserInfo({});
-    setDoseTimeList(doseTimeDataList);
+    if (isPrescriptionSubmit) {
+      prescriptionMutation.mutate(prescriptionForm);
+      setDuration("");
+      setDescription("");
+      setErrorMessage("");
+      setMedicineList([]);
+      setTargetUserInfo({});
+      setIsPrescriptionSubmit(false);
+      setDoseTimeList(doseTimeDataList);
+    }
   };
 
   const doseTimeDataList = [
@@ -177,11 +209,11 @@ const Prescription = () => {
                   name="search"
                   placeholder="Enter Medicine Name"
                 />
-                <Button type="submit" text="Search" />
+                <Button type="submit">Search</Button>
                 <div>
                   {medicineList.map((item, i) => (
                     <TextInput
-                      key={item.id}
+                      key={item.id, i}
                       label={`medicine${i}`}
                       value={item.name.slice(0, 35) + "…"}
                       name="medicine"
@@ -221,16 +253,16 @@ const Prescription = () => {
         <form onSubmit={handleSubmit}>
           <FlexBox>
             <div>
-              <TextArea name="description"></TextArea>
+              <TextArea name="description" onChange={(event) => onChangeHanlder(event, setDescription)}></TextArea>
             </div>
             <InputButtonBox>
-              <TextInput width="60px" label="duration" name="duration" />
+              <TextInput width="60px" label="duration" name="duration" onChange={(event) => onChangeHanlder(event, setDuration)} />
               <span>일치</span>
-              <Button type="submit" text="처방" />
+              <Button type="submit">처방</Button>
             </InputButtonBox>
           </FlexBox>
         </form>
-        {message && <Message>{message}</Message>}
+        {message && <p>처방전 전송이 완료되었습니다.</p>}
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </Wrapper>
 
@@ -316,24 +348,6 @@ const InputButtonBox = styled.div`
   > * {
     margin-left: 20px;
   }
-`;
-
-const TextArea = styled.textarea`
-  min-height: 100px;
-  width: 100%;
-  padding: 10px;
-  border: 0;
-  border-radius: 8px;
-  background-color: #EFF0F6;
-  outline: none;
-  overflow: auto;
-  box-shadow: none;
-  resize: none;
-`;
-
-const ErrorMessage = styled.p`
-  margin-top: 10px;
-  font-size: 14px;
 `;
 
 export default Prescription;
