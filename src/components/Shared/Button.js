@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Button = ({ text, type }) => {
+const Button = ({ text, type, className }) => {
   return (
-    <DefaultButton type={type}>
+    <DefaultButton type={type} className={className}>
       {text}
     </DefaultButton>
   );
@@ -25,7 +25,7 @@ const DefaultButton = styled.button`
   min-width: 80px;
   height: 45px;
   border-radius: 8px;
-  background-color: #2F49D1;
+  background-color: #2f49d1;
   vertical-align: middle;
   color: #fff;
 `;
