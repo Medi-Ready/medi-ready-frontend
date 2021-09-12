@@ -57,11 +57,12 @@ const Dimmed = styled.div`
 `;
 
 const Wrapper = styled.div`
-  min-width: 550px;
+  position: relative;
+  width: 550px;
   height: 600px;
   padding: 30px;
-  position: relative;
   background-color: ${({ theme }) => theme.color.white};
+  overflow-y: scroll;
 `;
 
 export default Modal;
