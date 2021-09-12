@@ -3,17 +3,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Button = ({ text, type }) => {
+const Button = ({ type, children, onClick }) => {
   return (
-    <DefaultButton type={type}>
-      {text}
+    <DefaultButton type={type} onClick={onClick}>
+      {children}
     </DefaultButton>
   );
 };
 
 Button.propTypes = {
   type: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 Button.defaultProps = {

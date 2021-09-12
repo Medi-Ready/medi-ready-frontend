@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Queue = ({ Badge, queue, targetUser, setTargetUserInfo }) => {
+import Badge from "../Shared/Badge";
+
+const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
   const { data } = queue;
 
   const handleUser = (event) => {
     event.preventDefault();
 
+    const { name, picture } = event.currentTarget.dataset;
+    let patient_id = null;
+
+    data.forEach((info) => {
+      if (info.user.name === name) {
+        patient_id = info.patient_id;
+      }
+    });
+
     const targetUserInfo = {
-      name: event.currentTarget.dataset.name,
-      picture: event.currentTarget.dataset.picture,
+      name,
+      picture,
+      patient_id,
       waiting: false,
     };
 
@@ -23,17 +35,23 @@ const Queue = ({ Badge, queue, targetUser, setTargetUserInfo }) => {
       <h2>Waiting List</h2>
 
       <ul>
-        {data.length && data.map((data, index) => {
-          const { name, picture } = data;
+        {data.map((data, index) => {
+          const { name, picture } = data.user;
 
           return (
             <li key={name, index}>
-              <a href="#" onClick={handleUser} data-picture={picture} data-name={name}>
+              <a href="#"
+                onClick={handleUser}
+                data-picture={picture}
+                data-name={name}
+              >
                 <img alt={name} src={picture} />
                 <b>{name}</b>
-                {
-                  targetUser.name !== name ? <Badge>Waiting</Badge> : <Badge color="green">Treating</Badge>
-                }
+                {targetUser.name !== name ? (
+                  <Badge>Waiting</Badge>
+                ) : (
+                  <Badge color="green">Treating</Badge>
+                )}
               </a>
             </li>
           );
@@ -44,9 +62,7 @@ const Queue = ({ Badge, queue, targetUser, setTargetUserInfo }) => {
 };
 
 Queue.propTypes = {
-  targetUser: PropTypes.string.isRequired,
   queue: PropTypes.object.isRequired,
-  Badge: PropTypes.object.isRequired,
   setTargetUserInfo: PropTypes.func.isRequired,
 };
 

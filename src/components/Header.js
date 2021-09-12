@@ -8,7 +8,7 @@ const Header = ({ userInfo }) => {
   return (
     <Wrapper>
       <div>
-        <Text>Welcome, {name}</Text>
+        { name && <Text>Welcome, {name}</Text> }
         <ImageBox>
           <img
             alt={name}
@@ -41,7 +41,6 @@ const Text = styled.span`
 
 const ImageBox = styled.span`
   width: 40px;
-  height: 40px;
 
   img {
     object-fit: cover;

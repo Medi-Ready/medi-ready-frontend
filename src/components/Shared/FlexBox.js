@@ -7,11 +7,12 @@ const FlexBox = ({ children, className }) => {
 };
 
 const FlexDiv = styled.div`
+  position: relative;
   display: flex;
   flex: 1;
 
   > * {
-    margin-top: 10px;
+    margin-top: 20px;
     width: 50%;
   }
 `;

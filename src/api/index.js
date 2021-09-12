@@ -74,3 +74,31 @@ export const getQueue = async () => {
 
   return await response.json();
 };
+
+export const postMedicine = async (medicine) => {
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/medicine`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(medicine),
+  });
+
+  return await response.json();
+};
+
+export const postPrescription = async (form) => {
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/prescription`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(form),
+  });
+
+  return await response.json();
+};
