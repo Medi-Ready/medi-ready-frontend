@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useQuery, useMutation } from "react-query";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 
+import { debounce } from "lodash";
 import styled from "styled-components";
-
-import { getQueue, postMedicine, postPrescription } from "../../api";
+import { getMedicineNames, getQueue, postMedicine, postPrescription } from "../../api";
 
 import { ModalContext } from "../../contexts/ModalContext";
 
 import Queue from "./Queue";
 import Badge from "../Shared/Badge";
+import SearchBar from "../SearchBar";
 import Button from "../Shared/Button";
 import FlexBox from "../Shared/FlexBox";
 import Checkbox from "../Shared/Checkbox";
@@ -18,17 +19,19 @@ import ConfirmModal from "../Shared/Modal/ConfirmModal";
 
 const Prescription = () => {
   const [message, setMessage] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [medicine, setMedicine] = useState("");
   const [duration, setDuration] = useState("");
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [medicineList, setMedicineList] = useState([]);
   const [doseTimeList, setDoseTimeList] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
   const [targetUserInfo, setTargetUserInfo] = useState({});
   const [isPrescriptionSubmit, setIsPrescriptionSubmit] = useState(false);
 
-  const { handleModal } = useContext(ModalContext);
   const { name, picture } = targetUserInfo;
+  const { handleModal } = useContext(ModalContext);
 
   useEffect(() => {
     setDoseTimeList(doseTimeDataList);
@@ -45,6 +48,29 @@ const Prescription = () => {
   const { data, isLoading } = useQuery("queue", getQueue, {
     refetchInterval: 3000,
   });
+
+  const medicineNamesMutation = useMutation(getMedicineNames, {
+    onSuccess: (result) => {
+      const {data} = result;
+
+      if (data) {
+        setSearchResult(data);
+      }
+    },
+  });
+
+  const handleKeywordChange = (newKeyword) => {
+    setKeyword(newKeyword);
+
+    searchMedicines(newKeyword);
+  };
+
+  const searchMedicines = useCallback(
+    debounce((newValue) => {
+      medicineNamesMutation.mutate({ keyword: newValue });
+    }, 1000),
+    [],
+  );
 
   const medicineMutation = useMutation(postMedicine, {
     onSuccess: (result) => {
@@ -101,7 +127,7 @@ const Prescription = () => {
       setDoseTimeList(allCheckedList);
     } else {
       let checkedList = doseTimeList.map((time) =>
-        time.id === id ? { ...time, isChecked: checked } : time
+        time.id === id ? { ...time, isChecked: checked } : time,
       );
 
       setDoseTimeList(checkedList);
@@ -205,11 +231,22 @@ const Prescription = () => {
             <form onSubmit={handleSearch}>
               <SearchBox>
                 <TextInput
-                  label="search"
+                  type="text"
                   name="search"
+                  label="search"
+                  value={keyword}
+                  setValue={handleKeywordChange}
                   placeholder="Enter Medicine Name"
                 />
-                <Button type="submit">Search</Button>
+                <SearchBar
+                  type="text"
+                  name="search"
+                  label="search"
+                  results={searchResult}
+                  keyword={keyword}
+                  setValue={handleKeywordChange}
+                />
+                <Button type="submit" text="Search" />
                 <div>
                   {medicineList.map((item, i) => (
                     <TextInput
@@ -217,7 +254,8 @@ const Prescription = () => {
                       label={`medicine${i}`}
                       value={item.name.slice(0, 35) + "…"}
                       name="medicine"
-                      disabled />
+                      disabled
+                    />
                   ))}
                 </div>
               </SearchBox>

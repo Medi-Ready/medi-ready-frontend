@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import styled from "styled-components";
+import logo from "../assets/mediwhite.png";
 
 import { postLogout } from "../api";
 
@@ -18,12 +19,12 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
       history.push("/login");
     }
   };
-  const OFFSET = 0;
-  const LIMIT = 3;
 
   return (
     <Wrapper>
-      <Logo><Link to="/">MEDI-READY</Link></Logo>
+      <Logo image={logo}>
+        <Link to="/">MEDI-READY</Link>
+      </Logo>
 
       <nav>
         <ul>
@@ -34,7 +35,7 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
             <Link to="/prescription">Prescription</Link>
           </li>
           <li>
-            <Link to={`/prescriptions?offset=${OFFSET}?limit=${LIMIT}`}>History</Link>
+            <Link to={"/prescriptions"}>History</Link>
           </li>
           <li>
             <Link to="/settings">Settings</Link>
@@ -80,13 +81,13 @@ const Wrapper = styled.nav`
 
 const Logo = styled.h1`
   display: block;
-  width: 100%;
-  height: 50px;
+  height: 60px;
   padding-left: 60px;
-  background: url("./logo.png") no-repeat;
+  background: url(${(props) => props.image}) no-repeat left center;
+  background-size: 50px auto;
   color: ${({ theme }) => theme.color.white};
   font-weight: 600;
-  line-height: 50px;
+  line-height: 65px;
   letter-spacing: 0.03em;
   box-sizing: border-box;
 `;
