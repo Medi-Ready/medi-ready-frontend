@@ -58,11 +58,9 @@ const App = () => {
                       <Prescription />
                     </Route>
                     <Route path="/prescriptions">
-                      <History />
+                      <History queryClient={queryClient} />
                     </Route>
-                    <Route path="/prescriptions/:id">
-
-                    </Route>
+                    <Route path="/prescriptions/:id"></Route>
                     <Route path="/settings">
                       <Settings />
                     </Route>
