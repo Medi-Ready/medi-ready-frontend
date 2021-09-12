@@ -1,17 +1,21 @@
 import React from "react";
-
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const HistoryListItem = ({ data, openModal, className }) => {
+const HistoryListItem = ({ prescription, openModal, className }) => {
+  const description = prescription.description;
+  const date = prescription.created_at.slice(0, 10);
+  const { name, picture } = prescription.patient.user;
+
   return (
     <ListItem onClick={openModal} className={className}>
       <div className="person">
-        <img src={data ? "https://picsum.photos/100" : ""} alt="photo" />
-        <b>{data ? data.name : ""}</b>
+        <span>
+          <img src={picture} alt={name} />
+        </span>
+        <b>{name}</b>
       </div>
-      <span>{data ? data.status : ""}</span>
-      <span>{data ? data.date : ""}</span>
+      <span>{description}</span>
+      <span>{date}</span>
     </ListItem>
   );
 };
