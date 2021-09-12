@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import styled, { ThemeProvider } from "styled-components";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 import { getAuthCheck } from "../api";
 import { ModalProvider } from "../contexts/ModalContext";
@@ -39,45 +40,46 @@ const App = () => {
   }, []);
 
   return (
-    <Wrapper>
-      <ThemeProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <GlobalStyles />
-          <Navigation isLoggedIn={user} onLogout={setUser} />
-          <Section>
-            <Header userInfo={user} />
-            <Article>
-              <ModalProvider>
-                <Switch>
-                  <Route path="/dashboard">
-                    <DashboardList userInfo={user} />
-                  </Route>
-                  <Route path="/prescription" userInfo={user}>
-                    <Prescription />
-                  </Route>
-                  <Route path="/prescriptions">
-                    <History />
-                  </Route>
-                  <Route path="/prescriptions/:id">
-
-                  </Route>
-                  <Route path="/settings">
-                    <Settings />
-                  </Route>
-                  <Route path="/login">
-                    <Login onSuccess={setUser} />
-                  </Route>
-                  <Route path="/" exact>
-                    <Redirect to="/dashboard" />
-                  </Route>
-                </Switch>
-              </ModalProvider>
-            </Article>
-            <Footer />
-          </Section>
-        </QueryClientProvider>
-      </ThemeProvider>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <ThemeProvider theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <GlobalStyles />
+            <Navigation isLoggedIn={user} onLogout={setUser} />
+            <Section>
+              <Header userInfo={user} />
+              <Article>
+                <ModalProvider>
+                  <Switch>
+                    <Route path="/dashboard">
+                      <DashboardList userInfo={user} />
+                    </Route>
+                    <Route path="/prescription" userInfo={user}>
+                      <Prescription />
+                    </Route>
+                    <Route path="/prescriptions">
+                      <History queryClient={queryClient} />
+                    </Route>
+                    <Route path="/prescriptions/:id"></Route>
+                    <Route path="/settings">
+                      <Settings />
+                    </Route>
+                    <Route path="/login">
+                      <Login onSuccess={setUser} />
+                    </Route>
+                    <Route path="/" exact>
+                      <Redirect to="/dashboard" />
+                    </Route>
+                  </Switch>
+                </ModalProvider>
+              </Article>
+              <Footer />
+            </Section>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ThemeProvider>
+      </Wrapper>
+    </>
   );
 };
 

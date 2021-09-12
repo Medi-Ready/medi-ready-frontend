@@ -35,7 +35,7 @@ const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
       <h2>Waiting List</h2>
 
       <ul>
-        {data.map((data, index) => {
+        {data?.map((data, index) => {
           const { name, picture } = data.user;
 
           return (
