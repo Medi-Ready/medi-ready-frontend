@@ -14,9 +14,7 @@ export const getAuthCheck = async () => {
     }
 
     return await response.json();
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 export const postLogin = async (user) => {
@@ -36,9 +34,7 @@ export const postLogin = async (user) => {
     }
 
     return response.json();
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 export const postLogout = async () => {
@@ -57,9 +53,7 @@ export const postLogout = async () => {
     }
 
     return await response.json();
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 export const getQueue = async () => {
@@ -103,23 +97,22 @@ export const postPrescription = async (form) => {
   return await response.json();
 };
 
-export const getPrescriptions = async (params) => {
-  const [key, { page }] = params.queryKey;
+export const getPrescriptions = async (page) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/prescriptions?page=${page}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  const LIMIT = 5;
-  const OFFSET = (page - 1) * LIMIT;
-
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/prescriptions?offset=${OFFSET}&limit=${LIMIT}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    },
-  );
-
-  return await response.json();
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
 };
