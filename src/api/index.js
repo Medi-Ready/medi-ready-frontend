@@ -108,7 +108,28 @@ export const getPrescriptions = async (page) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-      }
+      },
+    );
+
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getMedicineNames = async (keyword) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/medicines`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(keyword),
+      },
     );
 
     return await response.json();
