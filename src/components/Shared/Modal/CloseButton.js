@@ -14,13 +14,7 @@ const Button = styled.button`
   color: ${({ theme }) => theme.color.white};
 `;
 
-const CloseButton = (props) => {
-  const {
-    text,
-    color,
-    closeModal,
-  } = props;
-
+const CloseButton = ({ text, color, closeModal }) => {
   return (
     <Button
       type="button"

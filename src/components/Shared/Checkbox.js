@@ -3,11 +3,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Checkbox = ({ id, label, name, onChange }) => {
+const Checkbox = ({ id, label, name, onChange, checked }) => {
   return (
     <Wrapper>
       <label htmlFor={id}>{label}</label>
-      <input type="checkbox" id={id} name={name} onChange={onChange} />
+      <input type="checkbox"
+        id={id}
+        name={name}
+        onChange={onChange}
+        checked={checked}
+      />
     </Wrapper>
   );
 };

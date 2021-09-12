@@ -6,14 +6,14 @@ import styled from "styled-components";
 const Button = ({ text, type, className }) => {
   return (
     <DefaultButton type={type} className={className}>
-      {text}
+      {children}
     </DefaultButton>
   );
 };
 
 Button.propTypes = {
   type: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 Button.defaultProps = {
