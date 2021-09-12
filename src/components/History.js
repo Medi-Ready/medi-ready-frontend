@@ -1,24 +1,31 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { getPrescriptions } from "../api";
-import HistoryListItem from "./Shared/HistoryListItem";
 import { ModalContext } from "../contexts/ModalContext";
 
-const History = () => {
+import Pagination from "./Pagination";
+import HistoryListItem from "./Shared/HistoryListItem";
+
+const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
-  const [page, setPage] = useState(1);
-  const { data, status } = useQuery(["prescriptions", {page}], getPrescriptions);
 
-  const ViewDetail = () => {
+  const [page, setPage] = useState(0);
+  const { data, isPreviousData, isFetching } = useQuery(["prescriptions", page],
+    () => getPrescriptions(page), { keepPreviousData: true, staleTime: 2000 },
+  );
+
+  useEffect(() => {
+    if (data?.hasMore) {
+      queryClient.prefetchQuery(["prescriptions", page + 1],
+        () => getPrescriptions(page + 1),
+      );
+    }
+  }, [data, page, queryClient]);
+
+  const ViewDetail = (prescription) => {
     handleModal("디테일 내용");
-  };
-
-  const info = {
-    name: "Ken",
-    status: "medi-ready medi-ready medi-ready medi-ready",
-    date: "1993-05-28",
   };
 
   return (
@@ -34,21 +41,35 @@ const History = () => {
           </li>
         </ul>
         <ul>
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
-          <HistoryListItem data={info} openModal={ViewDetail} />
+          {isFetching ? (
+            <div>loading</div>
+          ) : (
+            data.prescriptions.map((prescription) => {
+              return (
+                <HistoryListItem
+                  key={prescription.prescription_id}
+                  prescription={prescription}
+                  openModal={() => ViewDetail(prescription)}
+                />
+              );
+            })
+          )
+          }
         </ul>
       </Wrapper>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        hasMore={data?.hasMore}
+        isPreviousData={isPreviousData}
+      />
     </>
   );
 };
 
 const Wrapper = styled.div`
   margin-top: 20px;
+  min-height: 60vh;
   padding: ${({ theme }) => theme.padding.default};
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.white};
