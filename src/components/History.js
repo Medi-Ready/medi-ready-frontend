@@ -12,12 +12,12 @@ const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
 
   const [page, setPage] = useState(0);
-  const { data, isPreviousData, isFetching } = useQuery(["prescriptions", page],
-    () => getPrescriptions(page), { keepPreviousData: true, staleTime: 2000 },
+  const { data, isPreviousData, isFetching, isStale } = useQuery(["prescriptions", page],
+    () => getPrescriptions(page), { keepPreviousData: true, staleTime: 5 * 1000 },
   );
 
   useEffect(() => {
-    if (data?.hasMore) {
+    if (data?.hasMoreData && isStale) {
       queryClient.prefetchQuery(["prescriptions", page + 1],
         () => getPrescriptions(page + 1),
       );
@@ -34,13 +34,13 @@ const History = ({ queryClient }) => {
 
       <Wrapper>
         <ul>
-          <li className="index">
+          <li className="name-card">
             <b>Name</b>
             <span>Status</span>
             <span>Date</span>
           </li>
         </ul>
-        <ul>
+        <ul className="list-items">
           {isFetching ? (
             <div>loading</div>
           ) : (
@@ -53,14 +53,13 @@ const History = ({ queryClient }) => {
                 />
               );
             })
-          )
-          }
+          )}
         </ul>
       </Wrapper>
       <Pagination
         page={page}
         setPage={setPage}
-        hasMore={data?.hasMore}
+        hasMoreData={data?.hasMoreData}
         isPreviousData={isPreviousData}
       />
     </>
@@ -88,17 +87,17 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eee;
-    padding: 15px;
+    padding: 30px 15px;
     height: 50px;
   }
 
-  li.index b {
+  li.name-card b {
     width: 20%;
     font-size: 16px;
     color: #767676;
   }
 
-  li.index span {
+  li.name-card span {
     color: #767676;
     font-size: 16px;
   }
@@ -111,7 +110,7 @@ const Wrapper = styled.div`
     width: 15%;
   }
 
-  li:not(.index):hover {
+  li:not(.name-card):hover {
     cursor: pointer;
   }
 `;

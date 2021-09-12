@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const TextInput = ({ label, width, name, placeholder, value, disabled, className, onChange }) => {
+const TextInput = ({ label, width, name, placeholder, value, disabled, className, setValue }) => {
   return (
     <label htmlFor={label} >
       <Input type="text"
@@ -14,7 +14,7 @@ const TextInput = ({ label, width, name, placeholder, value, disabled, className
         disabled={disabled}
         className={className}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={(event) => setValue(event.target.value)}
       />
     </label>
   );
