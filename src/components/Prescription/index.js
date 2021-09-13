@@ -3,9 +3,8 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 
 import { debounce } from "lodash";
 import styled from "styled-components";
-import { getMedicineNames, getQueue, postMedicine, postPrescription } from "../../api";
-
 import { ModalContext } from "../../contexts/ModalContext";
+import { getMedicineNames, getQueue, postMedicine, postPrescription } from "../../api";
 
 import Queue from "./Queue";
 import Badge from "../Shared/Badge";
@@ -64,13 +63,15 @@ const Prescription = () => {
     setKeyword(newKeyword);
 
     if (newKeyword) {
-      searchMedicines(newKeyword);
+      return searchMedicines(newKeyword);
     }
+
+    setSearchResult([]);
   };
 
   const searchMedicines = useCallback(
-    debounce((newValue) => {
-      medicineNamesMutation.mutate({ keyword: newValue });
+    debounce((newKeyword) => {
+      medicineNamesMutation.mutate({ keyword: newKeyword });
     }, 300),
     [],
   );
@@ -104,24 +105,27 @@ const Prescription = () => {
   const handleSearch = (event) => {
     event.preventDefault();
 
-    const { search } = event.target;
-
-    medicineMutation.mutate({ name: event.target.search.value });
-
+    const name = event.target.search.value;
     event.target.search.value = "";
+
+    if (!name) {
+      return;
+    }
+
+    medicineMutation.mutate({ name });
   };
 
   const handleChange = (event) => {
     const { id, checked } = event.target;
 
     if (id === "all") {
-      let allCheckedList = doseTimeList.map((time) => {
+      const allCheckedList = doseTimeList.map((time) => {
         return { ...time, isChecked: checked };
       });
 
       setDoseTimeList(allCheckedList);
     } else {
-      let checkedList = doseTimeList.map((time) =>
+      const checkedList = doseTimeList.map((time) =>
         time.id === id ? { ...time, isChecked: checked } : time,
       );
 
@@ -145,8 +149,8 @@ const Prescription = () => {
     handleModal(<ConfirmModal setIsPrescriptionSubmit={setIsPrescriptionSubmit} />);
 
     const prescriptionForm = {
-      doseTimes,
       duration,
+      doseTimes,
       description,
       medicines: medicineIdList,
       date: new Date().toISOString(),
@@ -154,7 +158,6 @@ const Prescription = () => {
     };
 
     if (isPrescriptionSubmit) {
-      prescriptionMutation.mutate(prescriptionForm);
       setDuration("");
       setDescription("");
       setErrorMessage("");
@@ -162,6 +165,7 @@ const Prescription = () => {
       setTargetUserInfo({});
       setIsPrescriptionSubmit(false);
       setDoseTimeList(doseTimeDataList);
+      prescriptionMutation.mutate(prescriptionForm);
     }
   };
 
@@ -192,8 +196,7 @@ const Prescription = () => {
                 </>
               )}
             </UserInfo>
-
-            <form onSubmit={handleSearch} autocomplete="off">
+            <form onSubmit={handleSearch} autoComplete="off">
               <SearchBox>
                 <SearchBar
                   type="text"
@@ -202,17 +205,16 @@ const Prescription = () => {
                   keyword={keyword}
                   results={searchResult}
                   setValue={handleKeywordChange}
-                  placeholder="Enter Medicine Name"
                 />
                 <SearchBarButton type="submit" text="Search">추가</SearchBarButton>
                 <div>
                   {medicineList.map((item, i) => (
                     <TextInput
-                      key={item.id, i}
-                      label={`medicine${i}`}
-                      value={item.name.slice(0, 35) + "…"}
-                      name="medicine"
                       disabled
+                      key={item.id, i}
+                      name="medicine"
+                      label={`medicine${i}`}
+                      value={item.name.length > 20 ? item.name.slice(0, 20) + "…" : item.name}
                     />
                   ))}
                 </div>
@@ -226,8 +228,8 @@ const Prescription = () => {
                 id="all"
                 name="all"
                 label="전체"
-                checked={doseTimeList.filter(time => time?.isChecked !== true).length < 1}
                 onChange={handleChange}
+                checked={doseTimeList.filter(time => time?.isChecked !== true).length < 1}
               />
               {doseTimeList.map((time) => {
                 const { id, name, label } = time;
@@ -267,7 +269,8 @@ const Prescription = () => {
           <Queue
             queue={data}
             targetUser={targetUserInfo}
-            setTargetUserInfo={setTargetUserInfo} />
+            setTargetUserInfo={setTargetUserInfo}
+          />
         </Wrapper>
       )}
     </>
