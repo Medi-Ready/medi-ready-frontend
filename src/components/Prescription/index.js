@@ -51,9 +51,10 @@ const Prescription = () => {
 
   const medicineNamesMutation = useMutation(getMedicineNames, {
     onSuccess: (result) => {
-      const {data} = result;
+      let { data } = result;
 
       if (data) {
+        data = data.slice(0, 5);
         setSearchResult(data);
       }
     },
@@ -62,13 +63,15 @@ const Prescription = () => {
   const handleKeywordChange = (newKeyword) => {
     setKeyword(newKeyword);
 
-    searchMedicines(newKeyword);
+    if (newKeyword) {
+      searchMedicines(newKeyword);
+    }
   };
 
   const searchMedicines = useCallback(
     debounce((newValue) => {
       medicineNamesMutation.mutate({ keyword: newValue });
-    }, 1000),
+    }, 300),
     [],
   );
 
@@ -78,6 +81,8 @@ const Prescription = () => {
 
       if (data) {
         setMedicine(data);
+        setKeyword("");
+        setSearchResult([]);
         setMedicineList(prevItems => [...prevItems, {
           id: data.medicine_id,
           name: data.name,
@@ -100,16 +105,6 @@ const Prescription = () => {
     event.preventDefault();
 
     const { search } = event.target;
-
-    if (!targetUserInfo.name) {
-      setErrorMessage("대기 환자를 선택해주세요.");
-      return;
-    }
-
-    if (!search.value) {
-      setErrorMessage("검색어를 입력해주세요.");
-      return;
-    }
 
     medicineMutation.mutate({ name: event.target.search.value });
 
@@ -146,36 +141,6 @@ const Prescription = () => {
     }
 
     const medicineIdList = medicineList.map(({ id }) => id);
-
-    if (!targetUserInfo.name) {
-      setErrorMessage("대기 환자를 선택해주세요.");
-      return;
-    }
-
-    if (!medicineList.length) {
-      setErrorMessage("처방할 약을 추가해주세요.");
-      return;
-    }
-
-    if (!doseTimes.length) {
-      setErrorMessage("복용 시간을 체크해주세요.");
-      return;
-    }
-
-    if (!doseTimes.length) {
-      setErrorMessage("복용 시간을 체크해주세요.");
-      return;
-    }
-
-    if (!description) {
-      setErrorMessage("복약지도는 필수 항목입니다.");
-      return;
-    }
-
-    if (!duration) {
-      setErrorMessage("복용기간을 입력해주세요.");
-      return;
-    }
 
     handleModal(<ConfirmModal setIsPrescriptionSubmit={setIsPrescriptionSubmit} />);
 
@@ -228,25 +193,18 @@ const Prescription = () => {
               )}
             </UserInfo>
 
-            <form onSubmit={handleSearch}>
+            <form onSubmit={handleSearch} autocomplete="off">
               <SearchBox>
-                <TextInput
-                  type="text"
-                  name="search"
-                  label="search"
-                  value={keyword}
-                  setValue={handleKeywordChange}
-                  placeholder="Enter Medicine Name"
-                />
                 <SearchBar
                   type="text"
                   name="search"
                   label="search"
-                  results={searchResult}
                   keyword={keyword}
+                  results={searchResult}
                   setValue={handleKeywordChange}
+                  placeholder="Enter Medicine Name"
                 />
-                <Button type="submit" text="Search" />
+                <SearchBarButton type="submit" text="Search">추가</SearchBarButton>
                 <div>
                   {medicineList.map((item, i) => (
                     <TextInput
@@ -331,6 +289,12 @@ const CheckboxList = styled.ul`
   max-width: 450px;
   padding-left: 15px;
   vertical-align: top;
+`;
+
+const SearchBarButton = styled(Button)`
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 
 const UserInfo = styled.div`
