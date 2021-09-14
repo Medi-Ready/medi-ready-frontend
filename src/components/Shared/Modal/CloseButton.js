@@ -1,18 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import PropTypes from "prop-types";
 import styled from "styled-components";
-
-const Button = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50px;
-  height: 50px;
-  background: ${props => props.color};
-  border: none;
-  color: ${({ theme }) => theme.color.white};
-`;
 
 const CloseButton = ({ text, color, closeModal }) => {
   return (
@@ -26,6 +15,17 @@ const CloseButton = ({ text, color, closeModal }) => {
     </Button>
   );
 };
+
+const Button = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: ${props => props.color};
+  border: none;
+  color: ${({ theme }) => theme.color.white};
+`;
 
 CloseButton.propTypes = {
   text: PropTypes.string,
