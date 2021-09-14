@@ -7,6 +7,7 @@ import { ModalContext } from "../contexts/ModalContext";
 
 import Pagination from "./Pagination";
 import HistoryListItem from "./Shared/HistoryListItem";
+import Detail from "./Detail";
 
 const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
@@ -25,7 +26,7 @@ const History = ({ queryClient }) => {
   }, [data, page, queryClient]);
 
   const ViewDetail = (prescription) => {
-    handleModal("디테일 내용");
+    handleModal(<Detail prescription={prescription} />);
   };
 
   return (
