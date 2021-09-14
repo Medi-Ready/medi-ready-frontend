@@ -11,17 +11,15 @@ import Detail from "./Detail";
 
 const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
-
   const [page, setPage] = useState(0);
+
   const { data, isPreviousData, isFetching, isStale } = useQuery(["prescriptions", page],
     () => getPrescriptions(page), { keepPreviousData: true, staleTime: 5 * 1000 },
   );
 
   useEffect(() => {
     if (data?.hasMoreData && isStale) {
-      queryClient.prefetchQuery(["prescriptions", page + 1],
-        () => getPrescriptions(page + 1),
-      );
+      queryClient.prefetchQuery(["prescriptions", page + 1], () => getPrescriptions(page + 1));
     }
   }, [data, page, queryClient]);
 

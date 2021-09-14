@@ -23,7 +23,7 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
     return <span>Loading...</span>;
   }
 
-  const { datas } = data;
+  const { people } = data;
 
   const handleUser = (event) => {
     event.preventDefault();
@@ -31,7 +31,7 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
     const { name, picture } = event.currentTarget.dataset;
     let patient_id = null;
 
-    datas.forEach((info) => {
+    people.forEach((info) => {
       if (info.user.name === name) {
         patient_id = info.patient_id;
       }
@@ -52,7 +52,7 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
       <h2>Waiting List</h2>
 
       <ul>
-        {datas?.map((data, index) => {
+        {people?.map((data, index) => {
           const { name, picture } = data.user;
 
           return (

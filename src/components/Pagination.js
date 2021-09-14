@@ -6,22 +6,25 @@ import FlexBox from "./Shared/FlexBox";
 const Pagination = ({ page, setPage, hasMoreData, isPreviousData }) => {
   return (
     <StyledFlexBox>
-      <StyledButton onClick={() => setPage((prev) => Math.max(prev - 1, 0))} disabled={page === 0}>
+      <Button
+        onClick={() => {setPage((prev) => Math.max(prev - 1, 0));}}
+        disabled={page === 0}
+      >
         prev
-      </StyledButton>
+      </Button>
 
       <span>{page + 1}</span>
 
-      <StyledButton
+      <Button
         onClick={() => {
-          if (!isPreviousData && hasMoreData) {
+          if (hasMoreData) {
             setPage((prev) => prev + 1);
           }
         }}
         disabled={isPreviousData || !hasMoreData}
       >
         next
-      </StyledButton>
+      </Button>
     </StyledFlexBox>
   );
 };
@@ -45,7 +48,7 @@ const StyledFlexBox = styled(FlexBox)`
   }
 `;
 
-const StyledButton = styled.button`
+const Button = styled.button`
   margin: 0;
   min-width: 20px;
   padding: 8px 10px;
