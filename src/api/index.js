@@ -134,15 +134,14 @@ export const getPrescriptions = async (page) => {
 export const getMedicineNames = async (keyword) => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/medicines`,
+      `${process.env.REACT_APP_BASE_URL}/api/medicines?search=${keyword}`,
       {
-        method: "POST",
+        method: "GET",
         credentials: "include",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(keyword),
       },
     );
 
