@@ -21,7 +21,7 @@ const SearchForm = ({ medicineList, setMedicineList }) => {
         setSearchResult([]);
         setMedicineList(prevItems => [...prevItems, {
           id: data.medicine_id,
-          name: data.name,
+          name: data.itemName,
         }]);
       }
     },

@@ -32,7 +32,7 @@ const SearchBar = ({ className, keyword, setKeyword, searchResult, setSearchResu
         index={index}
         name={itemName}
         id={medicine_id}
-        key={medicine_id}
+        key={medicine_id, index}
         frequency={frequency}
         updateValue={setKeyword}
       />

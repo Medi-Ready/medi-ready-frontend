@@ -25,10 +25,10 @@ const Detail = ({ prescription }) => {
         </InfoBox>
       </StyledFlexBox>
       {prescription.medicines.map((medicine) => {
-        const { name } = medicine.medicine_detail;
+        const { itemName } = medicine.medicine_detail;
 
         return (
-          <TextInput readOnly label={name} value={name} />
+          <TextInput readOnly label={itemName} value={itemName} />
         );
       })}
       <TextArea name="description" value={description} readOnly />

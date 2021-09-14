@@ -58,11 +58,9 @@ const Prescription = () => {
       }
     }
 
-    const medicineIdList = medicineList.map(({ id }) => id);
-
     const prescriptionForm = {
       doseTimes,
-      medicines: medicineIdList,
+      medicines: medicineList,
       duration: formData.duration,
       description: formData.description,
       date: new Date().toISOString(),
