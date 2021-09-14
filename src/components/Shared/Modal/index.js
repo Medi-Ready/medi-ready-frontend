@@ -58,8 +58,6 @@ const Dimmed = styled.div`
 
 const Wrapper = styled.div`
   position: relative;
-  width: 550px;
-  height: 600px;
   padding: 30px;
   background-color: ${({ theme }) => theme.color.white};
   overflow-y: scroll;

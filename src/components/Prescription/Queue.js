@@ -1,12 +1,29 @@
-import React from "react";
+import { useQuery } from "react-query";
+import React, { useEffect } from "react";
+
+import { getQueue } from "../../api";
 
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Badge from "../Shared/Badge";
 
-const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
-  const { data } = queue;
+const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
+  const { data, isLoading, refetch } = useQuery("queue", getQueue, {
+    refetchInterval: 3000,
+  });
+
+  useEffect(() => {
+    if (isSubmit) {
+      refetch();
+    }
+  }, [isSubmit]);
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  const { datas } = data;
 
   const handleUser = (event) => {
     event.preventDefault();
@@ -14,20 +31,20 @@ const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
     const { name, picture } = event.currentTarget.dataset;
     let patient_id = null;
 
-    data.forEach((info) => {
+    datas.forEach((info) => {
       if (info.user.name === name) {
         patient_id = info.patient_id;
       }
     });
 
-    const targetUserInfo = {
+    const selectedUser = {
       name,
       picture,
       patient_id,
       waiting: false,
     };
 
-    setTargetUserInfo(targetUserInfo);
+    setSelectedUser(selectedUser);
   };
 
   return (
@@ -35,7 +52,7 @@ const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
       <h2>Waiting List</h2>
 
       <ul>
-        {data?.map((data, index) => {
+        {datas?.map((data, index) => {
           const { name, picture } = data.user;
 
           return (
@@ -47,7 +64,7 @@ const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
               >
                 <img alt={name} src={picture} />
                 <b>{name}</b>
-                {targetUser.name !== name ? (
+                {selectedUser.name !== name ? (
                   <Badge>Waiting</Badge>
                 ) : (
                   <Badge color="green">Treating</Badge>
@@ -62,8 +79,7 @@ const Queue = ({ queue, targetUser, setTargetUserInfo }) => {
 };
 
 Queue.propTypes = {
-  queue: PropTypes.object.isRequired,
-  setTargetUserInfo: PropTypes.func.isRequired,
+  setSelectedUser: PropTypes.func.isRequired,
 };
 
 const Wrapper = styled.div`

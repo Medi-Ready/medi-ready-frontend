@@ -34,22 +34,22 @@ const Login = ({ onSuccess }) => {
   };
 
   return (
-    <StyledLogin>
+    <Wrapper>
       <div>
         <h2 className="sr-only">Login</h2>
 
         <strong>Welcome back!</strong>
         <p>Sign in to your account to continue</p>
 
-        <div className="button-box">
+        <ButtonBox>
           <button onClick={loginWithGoogle}><span>Google Login</span></button>
-        </div>
+        </ButtonBox>
       </div>
-    </StyledLogin>
+    </Wrapper>
   );
 };
 
-const StyledLogin = styled.div`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
@@ -72,13 +72,13 @@ const StyledLogin = styled.div`
     font-size: 14px;
     color: #767676;
   }
+`;
 
-  .button-box {
-    margin-top: 35px;
-    padding: 25px 30px 28px;
-    border-radius: 15px;
-    background-color: ${({ theme }) => theme.color.white};
-  }
+const ButtonBox = styled.div`
+  margin-top: 35px;
+  padding: 25px 30px 28px;
+  border-radius: 15px;
+  background-color: ${({ theme }) => theme.color.white};
 
   button {
     padding: 3px 15px;

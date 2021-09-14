@@ -1,120 +1,35 @@
-import { useQuery, useMutation } from "react-query";
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import { useMutation } from "react-query";
+import React, { useState, useEffect } from "react";
 
-import { debounce } from "lodash";
 import styled from "styled-components";
-import { getMedicineNames, getQueue, postMedicine, postPrescription } from "../../api";
-
-import { ModalContext } from "../../contexts/ModalContext";
+import { postPrescription } from "../../api";
 
 import Queue from "./Queue";
-import Badge from "../Shared/Badge";
-import SearchBar from "../SearchBar";
-import Button from "../Shared/Button";
+import UserInfo from "./UserInfo";
+import InputForm from "./InputForm";
+import SearchForm from "./SearchForm";
 import FlexBox from "../Shared/FlexBox";
 import Checkbox from "../Shared/Checkbox";
-import TextArea from "../Shared/TextArea";
-import TextInput from "../Shared/TextInput";
-import ConfirmModal from "../Shared/Modal/ConfirmModal";
 
 const Prescription = () => {
-  const [message, setMessage] = useState("");
-  const [keyword, setKeyword] = useState("");
-  const [medicine, setMedicine] = useState("");
-  const [duration, setDuration] = useState("");
-  const [description, setDescription] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formData, setFormData] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
   const [medicineList, setMedicineList] = useState([]);
+  const [selectedUser, setSelectedUser] = useState({});
   const [doseTimeList, setDoseTimeList] = useState([]);
-  const [searchResult, setSearchResult] = useState([]);
-  const [targetUserInfo, setTargetUserInfo] = useState({});
-  const [isPrescriptionSubmit, setIsPrescriptionSubmit] = useState(false);
-
-  const { name, picture } = targetUserInfo;
-  const { handleModal } = useContext(ModalContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     setDoseTimeList(doseTimeDataList);
   }, []);
 
   useEffect(() => {
-    setErrorMessage("");
-  }, [duration, description, targetUserInfo, medicineList, doseTimeList]);
-
-  const onChangeHanlder = (event, setState) => {
-    setState(event.target.value);
-  };
-
-  const { data, isLoading } = useQuery("queue", getQueue, {
-    refetchInterval: 3000,
-  });
-
-  const medicineNamesMutation = useMutation(getMedicineNames, {
-    onSuccess: (result) => {
-      const {data} = result;
-
-      if (data) {
-        setSearchResult(data);
-      }
-    },
-  });
-
-  const handleKeywordChange = (newKeyword) => {
-    setKeyword(newKeyword);
-
-    searchMedicines(newKeyword);
-  };
-
-  const searchMedicines = useCallback(
-    debounce((newValue) => {
-      medicineNamesMutation.mutate({ keyword: newValue });
-    }, 1000),
-    [],
-  );
-
-  const medicineMutation = useMutation(postMedicine, {
-    onSuccess: (result) => {
-      const { data } = result;
-
-      if (data) {
-        setMedicine(data);
-        setMedicineList(prevItems => [...prevItems, {
-          id: data.medicine_id,
-          name: data.name,
-        }]);
-      } else {
-        setErrorMessage("해당 약은 존재하지 않습니다.");
-      }
-    },
-  });
-
-  const prescriptionMutation = useMutation(postPrescription, {
-    onSuccess: ({ result }) => {
-      if (result === "success") {
-        setMessage("처방전 전송이 완료되었습니다.");
-      }
-    },
-  });
-
-  const handleSearch = (event) => {
-    event.preventDefault();
-
-    const { search } = event.target;
-
-    if (!targetUserInfo.name) {
-      setErrorMessage("대기 환자를 선택해주세요.");
-      return;
+    if (isSubmit) {
+      handleSubmit();
     }
+  }, [isSubmit]);
 
-    if (!search.value) {
-      setErrorMessage("검색어를 입력해주세요.");
-      return;
-    }
-
-    medicineMutation.mutate({ name: event.target.search.value });
-
-    event.target.search.value = "";
-  };
+  const prescriptionMutation = useMutation(postPrescription);
 
   const handleChange = (event) => {
     const { id, checked } = event.target;
@@ -134,9 +49,7 @@ const Prescription = () => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = () => {
     const doseTimes = [];
 
     for (const doseTime of doseTimeList) {
@@ -147,57 +60,22 @@ const Prescription = () => {
 
     const medicineIdList = medicineList.map(({ id }) => id);
 
-    if (!targetUserInfo.name) {
-      setErrorMessage("대기 환자를 선택해주세요.");
-      return;
-    }
-
-    if (!medicineList.length) {
-      setErrorMessage("처방할 약을 추가해주세요.");
-      return;
-    }
-
-    if (!doseTimes.length) {
-      setErrorMessage("복용 시간을 체크해주세요.");
-      return;
-    }
-
-    if (!doseTimes.length) {
-      setErrorMessage("복용 시간을 체크해주세요.");
-      return;
-    }
-
-    if (!description) {
-      setErrorMessage("복약지도는 필수 항목입니다.");
-      return;
-    }
-
-    if (!duration) {
-      setErrorMessage("복용기간을 입력해주세요.");
-      return;
-    }
-
-    handleModal(<ConfirmModal setIsPrescriptionSubmit={setIsPrescriptionSubmit} />);
-
     const prescriptionForm = {
       doseTimes,
-      duration,
-      description,
       medicines: medicineIdList,
+      duration: formData.duration,
+      description: formData.description,
       date: new Date().toISOString(),
-      patient_id: targetUserInfo.patient_id,
+      patient_id: selectedUser.patient_id,
     };
 
-    if (isPrescriptionSubmit) {
-      prescriptionMutation.mutate(prescriptionForm);
-      setDuration("");
-      setDescription("");
-      setErrorMessage("");
-      setMedicineList([]);
-      setTargetUserInfo({});
-      setIsPrescriptionSubmit(false);
-      setDoseTimeList(doseTimeDataList);
-    }
+    prescriptionMutation.mutate(prescriptionForm);
+
+    setErrorMessage("");
+    setSelectedUser({});
+    setMedicineList([]);
+    setIsSubmit(false);
+    setDoseTimeList(doseTimeDataList);
   };
 
   const doseTimeDataList = [
@@ -208,58 +86,14 @@ const Prescription = () => {
   ];
 
   return (
-    <>
-      <FlexBox>
-        <h2>Prescription</h2>
-      </FlexBox>
+    <div>
+      <h2>Prescription</h2>
 
-      <Wrapper>
+      <BoxWrapper>
         <FlexBox>
           <div>
-            <UserInfo>
-              {name && (
-                <>
-                  <span>
-                    <img src={picture} alt={name} />
-                  </span>
-                  <b>{name}</b>
-                  <Badge color="green">Treating</Badge>
-                </>
-              )}
-            </UserInfo>
-
-            <form onSubmit={handleSearch}>
-              <SearchBox>
-                <TextInput
-                  type="text"
-                  name="search"
-                  label="search"
-                  value={keyword}
-                  setValue={handleKeywordChange}
-                  placeholder="Enter Medicine Name"
-                />
-                <SearchBar
-                  type="text"
-                  name="search"
-                  label="search"
-                  results={searchResult}
-                  keyword={keyword}
-                  setValue={handleKeywordChange}
-                />
-                <Button type="submit" text="Search" />
-                <div>
-                  {medicineList.map((item, i) => (
-                    <TextInput
-                      key={item.id, i}
-                      label={`medicine${i}`}
-                      value={item.name.slice(0, 35) + "…"}
-                      name="medicine"
-                      disabled
-                    />
-                  ))}
-                </div>
-              </SearchBox>
-            </form>
+            <UserInfo selectedUser={selectedUser} isSubmit={isSubmit} />
+            <SearchForm medicineList={medicineList} setMedicineList={setMedicineList} />
           </div>
 
           <div>
@@ -276,6 +110,7 @@ const Prescription = () => {
 
                 return (
                   <Checkbox
+                    key={id}
                     checked={time?.isChecked || false}
                     id={id}
                     name={name}
@@ -288,35 +123,27 @@ const Prescription = () => {
           </div>
         </FlexBox>
 
-        <form onSubmit={handleSubmit}>
-          <FlexBox>
-            <div>
-              <TextArea name="description" onChange={(event) => onChangeHanlder(event, setDescription)}></TextArea>
-            </div>
-            <InputButtonBox>
-              <TextInput width="60px" label="duration" name="duration" onChange={(event) => onChangeHanlder(event, setDuration)} />
-              <span>일치</span>
-              <Button type="submit">처방</Button>
-            </InputButtonBox>
-          </FlexBox>
-        </form>
-        {message && <p>처방전 전송이 완료되었습니다.</p>}
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-      </Wrapper>
+        <InputForm
+          isSubmit={isSubmit}
+          setIsSubmit={setIsSubmit}
+          setFormData={setFormData}
+        />
 
-      {!isLoading && (
-        <Wrapper>
-          <Queue
-            queue={data}
-            targetUser={targetUserInfo}
-            setTargetUserInfo={setTargetUserInfo} />
-        </Wrapper>
-      )}
-    </>
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      </BoxWrapper>
+
+      <BoxWrapper>
+        <Queue
+          isSubmit={isSubmit}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
+      </BoxWrapper>
+    </div>
   );
 };
 
-const Wrapper = styled.div`
+const BoxWrapper = styled.div`
   margin-top: 20px;
   padding: 20px 20px 35px;
   border-radius: 10px;
@@ -331,61 +158,6 @@ const CheckboxList = styled.ul`
   max-width: 450px;
   padding-left: 15px;
   vertical-align: top;
-`;
-
-const UserInfo = styled.div`
-  position: relative;
-  padding-bottom: 20px;
-
-  b {
-    display: inline-block;
-    margin-left: 12px;
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  span {
-    display: inline-block;
-    font-size: 12px;
-
-    img {
-        display: inline-block;
-        width: 40px;
-        object-fit: cover;
-        border-radius: 50%;
-        vertical-align: middle;
-      }
-  }
-
-  em {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-`;
-
-const SearchBox = styled.div`
-  position: relative;
-
-  button {
-    position: absolute;
-    right: 0;
-  }
-
-  div input {
-    margin-top: 10px;
-  }
-`;
-
-const InputButtonBox = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  padding-left: 10px;
-
-  > * {
-    margin-left: 20px;
-  }
 `;
 
 export default Prescription;

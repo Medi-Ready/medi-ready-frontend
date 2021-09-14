@@ -151,3 +151,24 @@ export const getMedicineNames = async (keyword) => {
     console.log(err);
   }
 };
+
+export const updateSettings = async (form) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/settings/information`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      },
+    );
+
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
