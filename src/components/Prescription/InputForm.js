@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import FlexBox from "../Shared/FlexBox";
+import styled from "styled-components";
+
+import ConfirmModal from "../Shared/Modal/ConfirmModal";
+import { ModalContext } from "../../contexts/ModalContext";
 
 import Button from "../Shared/Button";
-import styled from "styled-components";
+import FlexBox from "../Shared/FlexBox";
 import TextArea from "../Shared/TextArea";
 import TextInput from "../Shared/TextInput";
-
-import { ModalContext } from "../../contexts/ModalContext";
-import ConfirmModal from "../Shared/Modal/ConfirmModal";
 
 const InputForm = ({ isSubmit, setIsSubmit, setFormData }) => {
   const { handleModal } = useContext(ModalContext);
@@ -31,7 +31,14 @@ const InputForm = ({ isSubmit, setIsSubmit, setFormData }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    handleModal(<ConfirmModal message="처방하시겠습니까?" setIsSubmit={setIsSubmit} setForm={setForm} />, "ConfirmModal");
+    handleModal(
+      <ConfirmModal
+        message="처방하시겠습니까?"
+        setIsSubmit={setIsSubmit}
+        setForm={setForm}
+      />,
+      "ConfirmModal",
+    );
   };
 
   return (
@@ -41,8 +48,8 @@ const InputForm = ({ isSubmit, setIsSubmit, setFormData }) => {
           <TextArea
             name="description"
             onChange={(event) => handleChange(event, setDescription)}
-            value={description}>
-          </TextArea>
+            value={description}
+          />
         </div>
         <InputButtonBox>
           <TextInput

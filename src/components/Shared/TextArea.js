@@ -9,9 +9,11 @@ const TextArea = ({ name, children, value, onChange, readOnly }) => {
       name={name}
       onChange={onChange}
       value={value}
-      readOnly={readOnly}>
+      readOnly={readOnly}
+    >
       {children}
-    </Wrapper>);
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.textarea`

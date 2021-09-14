@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Badge from "../Shared/Badge";
 
-const UserInfo = ({ selectedUser, isSubmit }) => {
+const UserInfo = ({ selectedUser }) => {
   const { name, picture } = selectedUser;
 
   return (
