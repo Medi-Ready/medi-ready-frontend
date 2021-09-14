@@ -6,7 +6,10 @@ import FlexBox from "./Shared/FlexBox";
 const Pagination = ({ page, setPage, hasMoreData, isPreviousData }) => {
   return (
     <StyledFlexBox>
-      <StyledButton onClick={() => setPage((prev) => Math.max(prev - 1, 0))} disabled={page === 0}>
+      <StyledButton
+        onClick={() => {setPage((prev) => Math.max(prev - 1, 0));}}
+        disabled={page === 0}
+      >
         prev
       </StyledButton>
 
@@ -14,7 +17,7 @@ const Pagination = ({ page, setPage, hasMoreData, isPreviousData }) => {
 
       <StyledButton
         onClick={() => {
-          if (!isPreviousData && hasMoreData) {
+          if (hasMoreData) {
             setPage((prev) => prev + 1);
           }
         }}

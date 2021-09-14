@@ -1,10 +1,8 @@
+import React, { useState } from "react";
 import { useMutation } from "react-query";
-import React, { useState, useCallback } from "react";
-
-import { debounce } from "lodash";
 
 import styled from "styled-components";
-import { getMedicineNames, postMedicine } from "../../api";
+import { postMedicine } from "../../api";
 
 import SearchBar from "../SearchBar";
 import Button from "../Shared/Button";
@@ -39,44 +37,14 @@ const SearchForm = ({ medicineList, setMedicineList }) => {
     medicineMutation.mutate({ name: keyword });
   };
 
-  const medicineNamesMutation = useMutation(getMedicineNames, {
-    onSuccess: (result) => {
-      let { data } = result;
-
-      if (data) {
-        data = data.slice(0, 5);
-        setSearchResult(data);
-      }
-    },
-  });
-
-  const handleKeywordChange = (newKeyword) => {
-    setKeyword(newKeyword);
-
-    if (newKeyword) {
-      return searchMedicines(newKeyword);
-    }
-
-    setSearchResult([]);
-  };
-
-  const searchMedicines = useCallback(
-    debounce((newKeyword) => {
-      medicineNamesMutation.mutate({ keyword: newKeyword });
-    }, 300),
-    [],
-  );
-
   return (
     <Wrapper>
       <form onSubmit={handleSearch} autoComplete="off">
         <SearchBar
-          type="text"
-          name="search"
-          label="search"
           keyword={keyword}
-          results={searchResult}
-          setValue={handleKeywordChange}
+          setKeyword={setKeyword}
+          searchResult={searchResult}
+          setSearchResult={setSearchResult}
         />
         <StyledButton type="submit" text="Search">추가</StyledButton>
         <div>
