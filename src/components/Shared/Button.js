@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Button = ({ type, className, children }) => {
+const Button = ({ type, className, children, onClick }) => {
   return (
-    <DefaultButton type={type} className={className}>
+    <DefaultButton type={type} className={className} onClick={onClick}>
       {children}
     </DefaultButton>
   );

@@ -1,9 +1,17 @@
+import { values } from "lodash";
 import React from "react";
 
 import styled from "styled-components";
 
-const TextArea = ({ name, children, onChange }) => {
-  return <Wrapper name={name} onChange={onChange}>{children}</Wrapper>;
+const TextArea = ({ name, children, value, onChange, readOnly }) => {
+  return (
+    <Wrapper
+      name={name}
+      onChange={onChange}
+      value={value}
+      readOnly={readOnly}>
+      {children}
+    </Wrapper>);
 };
 
 const Wrapper = styled.textarea`
@@ -13,8 +21,8 @@ const Wrapper = styled.textarea`
   border: 0;
   border-radius: 8px;
   background-color: #EFF0F6;
-  outline: none;
   overflow: auto;
+  outline: none;
   box-shadow: none;
   resize: none;
 `;
