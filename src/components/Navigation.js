@@ -35,7 +35,7 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
             <Link to="/prescription">Prescription</Link>
           </li>
           <li>
-            <Link to={"/prescriptions"}>History</Link>
+            <Link to="/prescriptions">History</Link>
           </li>
           <li>
             <Link to="/settings">Settings</Link>

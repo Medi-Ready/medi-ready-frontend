@@ -50,19 +50,21 @@ const Prescription = () => {
   };
 
   const handleSubmit = () => {
-    const doseTimes = [];
+    const doseTimes = {};
 
-    for (const doseTime of doseTimeList) {
-      if (doseTime.isChecked) {
-        doseTimes.push(doseTime.id);
+    doseTimeList.forEach(({ isChecked, id }) => {
+      if (isChecked) {
+        if (id === "beforeBed") {
+          return doseTimes["before_bed"] = true;
+        }
+
+        doseTimes[id] = true;
       }
-    }
-
-    const medicineIdList = medicineList.map(({ id }) => id);
+    });
 
     const prescriptionForm = {
       doseTimes,
-      medicines: medicineIdList,
+      medicines: medicineList,
       duration: formData.duration,
       description: formData.description,
       date: new Date().toISOString(),
