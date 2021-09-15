@@ -1,23 +1,29 @@
 import { useMutation } from "react-query";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import styled from "styled-components";
 import { postPrescription } from "../../api";
+import { ModalContext } from "../../contexts/ModalContext";
 
 import Queue from "./Queue";
 import UserInfo from "./UserInfo";
 import InputForm from "./InputForm";
 import SearchForm from "./SearchForm";
+import Loading from "../Shared/Loading";
 import FlexBox from "../Shared/FlexBox";
 import Checkbox from "../Shared/Checkbox";
+import ErrorMessage from "../Shared/ErrorMessage";
+import ConfirmMessage from "../Shared/Modal/ConfirmMessage";
 
 const Prescription = () => {
+  const { handleModal } = useContext(ModalContext);
+
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [medicineList, setMedicineList] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
   const [doseTimeList, setDoseTimeList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     setDoseTimeList(doseTimeDataList);
@@ -29,7 +35,17 @@ const Prescription = () => {
     }
   }, [isSubmit]);
 
-  const prescriptionMutation = useMutation(postPrescription);
+  const { mutate, isLoading } = useMutation(postPrescription, {
+    onSuccess({ result }) {
+      if (result === "success") {
+        handleModal(<ConfirmMessage text="처방전 전송이 완료되었습니다." />);
+      }
+    },
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const handleChange = (event) => {
     const { id, checked } = event.target;
@@ -67,12 +83,43 @@ const Prescription = () => {
       patient_id: selectedUser.patient_id,
     };
 
-    prescriptionMutation.mutate(prescriptionForm);
+    if (!selectedUser.name) {
+      setError("대기 환자를 선택해주세요.");
+      setIsSubmit(false);
+      return;
+    }
 
-    setErrorMessage("");
+    if (!medicineList.length) {
+      setError("처방할 약을 추가해주세요.");
+      setIsSubmit(false);
+      return;
+    }
+
+    if (!doseTimes.length) {
+      setError("복용 시간을 체크해주세요.");
+      setIsSubmit(false);
+      return;
+    }
+
+    if (!formData.description) {
+      setError("복약지도는 필수 항목입니다.");
+      setIsSubmit(false);
+      return;
+    }
+
+    if (!formData.duration) {
+      setError("복용기간을 입력해주세요.");
+      setIsSubmit(false);
+      return;
+    }
+
+    mutate(prescriptionForm);
+
+    setError("");
+    setFormData({});
+    setIsSubmit(false);
     setSelectedUser({});
     setMedicineList([]);
-    setIsSubmit(false);
     setDoseTimeList(doseTimeDataList);
   };
 
@@ -91,7 +138,11 @@ const Prescription = () => {
         <FlexBox>
           <div>
             <UserInfo selectedUser={selectedUser} isSubmit={isSubmit} />
-            <SearchForm medicineList={medicineList} setMedicineList={setMedicineList} />
+            <SearchForm
+              setError={setError}
+              medicineList={medicineList}
+              setMedicineList={setMedicineList}
+            />
           </div>
 
           <div>
@@ -127,7 +178,7 @@ const Prescription = () => {
           setFormData={setFormData}
         />
 
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </BoxWrapper>
 
       <BoxWrapper>

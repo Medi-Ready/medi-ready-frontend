@@ -5,13 +5,16 @@ import { updateSettings } from "../api";
 
 import styled from "styled-components";
 import Button from "./Shared/Button";
+import Loading from "./Shared/Loading";
 import TextInput from "./Shared/TextInput";
 
 const Settings = () => {
   const [input, setInput] = useState({ name: "", address: "" });
-  const [pharmacist, setPharmacist] = useState({});
+  const { isLoading, mutate, isSuccess } = useMutation(updateSettings);
 
-  const pharmacistMutation = useMutation(updateSettings);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const handleChange = (event) => {
     const activeInput = {
@@ -27,17 +30,25 @@ const Settings = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    pharmacistMutation.mutate({ name, address });
+    mutate({ name, address });
   };
 
   return (
     <Wrapper>
       <h2>Settings</h2>
+
       <form onSubmit={handleSubmit}>
-        <StyledInputText name="name" placeholder="약국이름" value={name} onChange={handleChange} />
-        <StyledInputText name="address" placeholder="약국주소" value={address} onChange={handleChange} />
+        <StyledInputText name="name" placeholder="pharmacy name" value={name} onChange={handleChange} />
+        <StyledInputText name="address" placeholder="pharmacy address" value={address} onChange={handleChange} />
         <Button type="submit">전송</Button>
       </form>
+
+      {isSuccess && (
+        <>
+          <p>Pharmacy name : {input.name}</p>
+          <p>Pharmacy address : {input.address}</p>
+        </>
+      )}
     </Wrapper>
   );
 };

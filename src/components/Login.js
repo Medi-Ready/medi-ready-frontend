@@ -5,11 +5,13 @@ import { useMutation } from "react-query";
 import styled from "styled-components";
 
 import { postLogin } from "../api";
+import Loading from "./Shared/Loading";
+import Error from "./Shared/Error";
 
 const Login = ({ onSuccess }) => {
   const history = useHistory();
 
-  const { mutate } = useMutation(postLogin, {
+  const { mutate, isLoading, error, isError } = useMutation(postLogin, {
     onSuccess: (result) => {
       const { data } = result;
 
@@ -18,19 +20,29 @@ const Login = ({ onSuccess }) => {
     },
   });
 
+  if (isError) {
+    return <Error error={error} />;
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   const loginWithGoogle = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const { additionalUserInfo } = await firebase.auth().signInWithPopup(provider);
-    const { email, name, picture } = additionalUserInfo.profile;
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const { additionalUserInfo } = await firebase.auth().signInWithPopup(provider);
+      const { email, name, picture } = additionalUserInfo.profile;
 
-    const userData = {
-      name,
-      email,
-      picture,
-      user_type: "pharmacist",
-    };
+      const userData = {
+        name,
+        email,
+        picture,
+        user_type: "pharmacist",
+      };
 
-    mutate(userData);
+      mutate(userData);
+    } catch (err) {}
   };
 
   return (
