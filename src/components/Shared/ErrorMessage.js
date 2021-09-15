@@ -12,19 +12,15 @@ const ErrorMessage = ({ children }) => {
 
 const Wrapper = styled.p`
   position: relative;
-  margin-top: 5px;
-  padding-top: 0;
-  border-top: 0;
-  font-size: 13px;
-  color: #f03264;
+  margin-top: 10px;
+  text-align: left;
   letter-spacing: -0.65px;
   line-height: 1.2;
-  text-align: left;
+  font-size: 13px;
+  color: #f03264;
   animation-name: bounce;
   animation-duration: .5s;
   animation-delay: .25s;
-  margin-top: 10px;
-  font-size: 13px;
 
   @keyframes bounce {
     0% {
