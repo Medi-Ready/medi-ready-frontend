@@ -14,7 +14,7 @@ const Error = ({ error }) => {
       ) : (
         <p>{String(error)}</p>
       )}
-      <StyledLink to="/">홈으로</StyledLink>
+      <StyledLink to="/">home</StyledLink>
     </Wrapper>
   );
 };
