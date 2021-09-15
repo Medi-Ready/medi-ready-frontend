@@ -6,15 +6,18 @@ import { postMedicine } from "../../api";
 
 import SearchBar from "../SearchBar";
 import Button from "../Shared/Button";
+import Loading from "../Shared/Loading";
 import TextInput from "../Shared/TextInput";
 
-const SearchForm = ({ medicineList, setMedicineList }) => {
+const SearchForm = ({ medicineList, setMedicineList, setError }) => {
   const [keyword, setKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
-  const medicineMutation = useMutation(postMedicine, {
-    onSuccess: (result) => {
-      const { data } = result;
+  const { isLoading, mutate } = useMutation(postMedicine, {
+    onSuccess: ({ result, data, message }) => {
+      if (result === "fail") {
+        setError(message);
+      }
 
       if (data) {
         setKeyword("");
@@ -27,6 +30,10 @@ const SearchForm = ({ medicineList, setMedicineList }) => {
     },
   });
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   const handleSearch = (event) => {
     event.preventDefault();
 
@@ -34,7 +41,7 @@ const SearchForm = ({ medicineList, setMedicineList }) => {
       return;
     }
 
-    medicineMutation.mutate({ name: keyword });
+    mutate({ name: keyword });
   };
 
   return (
