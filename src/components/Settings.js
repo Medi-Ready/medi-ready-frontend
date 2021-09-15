@@ -40,7 +40,7 @@ const Settings = () => {
       <form onSubmit={handleSubmit}>
         <StyledInputText name="name" placeholder="pharmacy name" value={name} onChange={handleChange} />
         <StyledInputText name="address" placeholder="pharmacy address" value={address} onChange={handleChange} />
-        <Button type="submit">전송</Button>
+        <Button type="submit">send</Button>
       </form>
 
       {isSuccess && (

@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Button = ({ type, className, children, onClick }) => {
+const Button = ({ type, children, onClick, className }) => {
   return (
     <DefaultButton type={type} className={className} onClick={onClick}>
       {children}
@@ -12,7 +12,9 @@ const Button = ({ type, className, children, onClick }) => {
 };
 
 Button.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
   children: PropTypes.string.isRequired,
 };
 
