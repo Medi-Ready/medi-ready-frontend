@@ -57,9 +57,9 @@ const Wrapper = styled.div`
 
 Dashboard.propTypes = {
   src: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
 };
 
 export default Dashboard;

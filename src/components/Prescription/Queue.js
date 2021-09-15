@@ -1,5 +1,6 @@
-import { useQuery } from "react-query";
 import React, { useEffect } from "react";
+import { useQuery } from "react-query";
+import { useHistory } from "react-router";
 
 import { getQueue } from "../../api";
 
@@ -7,11 +8,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Badge from "../Shared/Badge";
+import Loading from "../Shared/Loading";
+import Error from "../Shared/Error";
 
 const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
-  const { data, isLoading, refetch } = useQuery("queue", getQueue, {
-    refetchInterval: 3000,
-  });
+  const history = useHistory();
+  const { data, error, isError, isLoading, refetch } = useQuery("queue", getQueue);
 
   useEffect(() => {
     if (isSubmit) {
@@ -20,7 +22,18 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
   }, [isSubmit]);
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <Loading />;
+  }
+
+  if (isError) {
+    <Error error={error} />;
+  }
+
+  if (data.result && data.result == "fail") {
+    history.push({
+      pathname: "/error",
+      state: { error: data.message },
+    });
   }
 
   const { people } = data;

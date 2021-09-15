@@ -9,16 +9,11 @@ import FlexBox from "../Shared/FlexBox";
 import TextArea from "../Shared/TextArea";
 import TextInput from "../Shared/TextInput";
 
-const InputForm = ({ isSubmit, setIsSubmit, setFormData }) => {
+const InputForm = ({ error, setIsSubmit, setFormData }) => {
   const { handleModal } = useContext(ModalContext);
 
   const [duration, setDuration] = useState("");
   const [description, setDescription] = useState("");
-
-  useEffect(() => {
-    setDuration("");
-    setDescription("");
-  }, [isSubmit]);
 
   const handleChange = (event, setState) => {
     setState(event.target.value);
@@ -33,11 +28,11 @@ const InputForm = ({ isSubmit, setIsSubmit, setFormData }) => {
 
     handleModal(
       <ConfirmModal
+        error={error}
+        setForm={setForm}
         message="처방하시겠습니까?"
         setIsSubmit={setIsSubmit}
-        setForm={setForm}
       />,
-      "ConfirmModal",
     );
   };
 

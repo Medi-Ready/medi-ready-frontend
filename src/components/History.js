@@ -5,9 +5,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { getPrescriptions } from "../api";
 import { ModalContext } from "../contexts/ModalContext";
 
-import Pagination from "./Pagination";
-import HistoryListItem from "./Shared/HistoryListItem";
 import Detail from "./Detail";
+import Pagination from "./Pagination";
+import Loading from "./Shared/Loading";
+import HistoryListItem from "./Shared/HistoryListItem";
 
 const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
@@ -41,7 +42,7 @@ const History = ({ queryClient }) => {
         </ul>
         <ul className="list-items">
           {isFetching ? (
-            <div>loading</div>
+            <Loading />
           ) : (
             data.prescriptions.map((prescription) => {
               return (

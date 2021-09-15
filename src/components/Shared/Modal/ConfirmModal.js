@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-
 import styled from "styled-components";
+
+import { ModalContext } from "../../../contexts/ModalContext";
 
 import Button from "../Button";
 import CloseButton from "./CloseButton";
-import { ModalContext } from "../../../contexts/ModalContext";
 
 const ConfirmModal = ({ setIsSubmit, setForm, message }) => {
   const { handleModal } = useContext(ModalContext);
@@ -18,15 +18,17 @@ const ConfirmModal = ({ setIsSubmit, setForm, message }) => {
   return (
     <Wrapper>
       <p>{message}</p>
-      <CloseButton text="취소" closeModal={() => handleModal(null)} />
-      <StyledButton type="button" onClick={handleChange}>확인</StyledButton>
+      <ButtonBox>
+        <CloseButton text="취소" closeModal={() => handleModal(null)} />
+        <StyledButton type="button" onClick={handleChange}>확인</StyledButton>
+      </ButtonBox>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   p {
-    text-align: center;;
+    text-align: center;
     margin-bottom: 10px;
   }
 
@@ -39,6 +41,10 @@ const Wrapper = styled.div`
 
 const StyledButton = styled(Button)`
   color: #fff !important;
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 20px;
 `;
 
 export default ConfirmModal;

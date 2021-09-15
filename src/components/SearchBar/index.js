@@ -40,7 +40,7 @@ const SearchBar = ({ className, keyword, setKeyword, searchResult, setSearchResu
   });
 
   return (
-    <div className="auto">
+    <>
       <TextInput
         label="search"
         name="search"
@@ -50,7 +50,7 @@ const SearchBar = ({ className, keyword, setKeyword, searchResult, setSearchResu
         onChange={(event) => setKeyword(event.target.value)}
       />
       {searchResult.length > 0 && <SearchResult>{renderResults}</SearchResult>}
-    </div>
+    </>
   );
 };
 
