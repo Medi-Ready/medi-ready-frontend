@@ -1,13 +1,12 @@
 import React, { useRef, useContext } from "react";
 import { createPortal } from "react-dom";
-
 import styled from "styled-components";
 
 import { ModalContext } from "../../../contexts/ModalContext";
 import CloseButton from "./CloseButton";
 
 const Modal = () => {
-  const { isModalOpened, handleModal, modalContent } = useContext(ModalContext);
+  const { isModalOpened, handleModal, modalContent, modalType } = useContext(ModalContext);
   const modalRef = useRef();
 
   const clickDimmed = (event) => {
@@ -21,6 +20,16 @@ const Modal = () => {
   const renderModal = () => {
     if (!isModalOpened) {
       return null;
+    }
+
+    if (modalType === "ConfirmModal") {
+      return (
+        <Dimmed onClick={clickDimmed}>
+          <Wrapper ref={modalRef} modalType={modalType}>
+            {modalContent}
+          </Wrapper>
+        </Dimmed>
+      );
     }
 
     return (
@@ -53,12 +62,13 @@ const Dimmed = styled.div`
   height: 100vh;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.2);
 `;
 
 const Wrapper = styled.div`
   position: relative;
   padding: 30px;
+  border-radius: ${(props) => props.modalType === "ConfirmModal" && "20px"};
   background-color: ${({ theme }) => theme.color.white};
   overflow-y: scroll;
 `;

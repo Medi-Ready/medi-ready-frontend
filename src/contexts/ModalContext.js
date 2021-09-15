@@ -13,10 +13,11 @@ const ModalProvider = ({ children }) => {
     isModalOpened,
     handleModal,
     modalContent,
+    modalType,
   } = useModal();
 
   return (
-    <Provider value={{ isModalOpened, handleModal, modalContent }}>
+    <Provider value={{ isModalOpened, handleModal, modalContent, modalType }}>
       {children}
       <Modal />
     </Provider>
