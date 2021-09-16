@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 import React, { useState, useEffect, useContext } from "react";
-
 import styled from "styled-components";
+
 import { postPrescription } from "../../api";
 import { ModalContext } from "../../contexts/ModalContext";
 
@@ -9,11 +9,12 @@ import Queue from "./Queue";
 import UserInfo from "./UserInfo";
 import InputForm from "./InputForm";
 import SearchForm from "./SearchForm";
-import Loading from "../Shared/Loading";
-import FlexBox from "../Shared/FlexBox";
-import Checkbox from "../Shared/Checkbox";
-import ErrorMessage from "../Shared/ErrorMessage";
-import ConfirmMessage from "../Shared/Modal/ConfirmMessage";
+import Loading from "../../components/Shared/Loading";
+import FlexBox from "../../components/Shared/FlexBox";
+import Checkbox from "../../components/Shared/Checkbox";
+import { PageTitle, PageContent } from "../../components/Base";
+import ErrorMessage from "../../components/Shared/ErrorMessage";
+import ConfirmMessage from "../../components/Shared/Modal/ConfirmMessage";
 
 const Prescription = () => {
   const { handleModal } = useContext(ModalContext);
@@ -99,7 +100,7 @@ const Prescription = () => {
       return;
     }
 
-    if (!doseTimes.length) {
+    if (!Object.keys(doseTimes).length) {
       setError("복용 시간을 체크해주세요.");
       setIsSubmit(false);
       return;
@@ -135,8 +136,8 @@ const Prescription = () => {
   ];
 
   return (
-    <div>
-      <h2>Prescription</h2>
+    <PageContent>
+      <PageTitle>Prescription</PageTitle>
 
       <BoxWrapper>
         <FlexBox>
@@ -192,7 +193,7 @@ const Prescription = () => {
           setSelectedUser={setSelectedUser}
         />
       </BoxWrapper>
-    </div>
+    </PageContent>
   );
 };
 

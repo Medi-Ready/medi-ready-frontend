@@ -4,13 +4,16 @@ import { useMutation } from "react-query";
 import { updateSettings } from "../api";
 
 import styled from "styled-components";
-import Button from "./Shared/Button";
-import Loading from "./Shared/Loading";
-import TextInput from "./Shared/TextInput";
+import Button from "../components/Shared/Button";
+import Loading from "../components/Shared/Loading";
+import TextInput from "../components/Shared/TextInput";
+import { PageTitle, PageContent } from "../components/Base";
 
 const Settings = () => {
   const [input, setInput] = useState({ name: "", address: "" });
   const { isLoading, mutate, isSuccess } = useMutation(updateSettings);
+
+  const { name, address } = input;
 
   if (isLoading) {
     return <Loading />;
@@ -25,8 +28,6 @@ const Settings = () => {
     setInput(activeInput);
   };
 
-  const { name, address } = input;
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -34,12 +35,12 @@ const Settings = () => {
   };
 
   return (
-    <Wrapper>
-      <h2>Settings</h2>
+    <StyledPageContent>
+      <PageTitle>Settings</PageTitle>
 
       <form onSubmit={handleSubmit}>
-        <StyledInputText name="name" placeholder="pharmacy name" value={name} onChange={handleChange} />
-        <StyledInputText name="address" placeholder="pharmacy address" value={address} onChange={handleChange} />
+        <StyledTextInput name="name" placeholder="pharmacy name" value={name} onChange={handleChange} />
+        <StyledTextInput name="address" placeholder="pharmacy address" value={address} onChange={handleChange} />
         <Button type="submit">send</Button>
       </form>
 
@@ -49,11 +50,11 @@ const Settings = () => {
           <p>Pharmacy address : {input.address}</p>
         </>
       )}
-    </Wrapper>
+    </StyledPageContent>
   );
 };
 
-const Wrapper = styled.div`
+const StyledPageContent = styled(PageContent)`
   width: 500px;
 
   input {
@@ -65,7 +66,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const StyledInputText = styled(TextInput)`
+const StyledTextInput = styled(TextInput)`
   background-color: #fff;
 `;
 

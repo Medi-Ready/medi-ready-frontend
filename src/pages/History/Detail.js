@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
-
+import React from "react";
 import styled from "styled-components";
-import FlexBox from "./Shared/FlexBox";
-import TextArea from "./Shared/TextArea";
-import TextInput from "./Shared/TextInput";
+
+import FlexBox from "../../components/Shared/FlexBox";
+import TextArea from "../../components/Shared/TextArea";
+import TextInput from "../../components/Shared/TextInput";
 
 const Detail = ({ prescription }) => {
   const description = prescription.description;
@@ -24,6 +24,7 @@ const Detail = ({ prescription }) => {
           </FlexBox>
         </InfoBox>
       </StyledFlexBox>
+
       {prescription.medicines.map((medicine) => {
         const { itemName } = medicine.medicine_detail;
 
@@ -31,6 +32,7 @@ const Detail = ({ prescription }) => {
           <TextInput readOnly label={itemName} value={itemName} />
         );
       })}
+
       <TextArea name="description" value={description} readOnly />
     </Wrapper>
   );
@@ -84,9 +86,6 @@ const InfoBox = styled.div`
     font-size: 24px;
     font-weight: 400;
   }
-`;
-
-const DateTitle = styled.div`
 `;
 
 export default Detail;

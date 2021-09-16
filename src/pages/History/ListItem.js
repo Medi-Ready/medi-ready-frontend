@@ -8,12 +8,10 @@ const HistoryListItem = ({ prescription, openModal, className }) => {
 
   return (
     <ListItem onClick={openModal} className={className}>
-      <div className="person">
-        <span>
-          <img src={picture} alt={name} />
-        </span>
+      <User>
+        <span><img src={picture} alt={name} /></span>
         <b>{name}</b>
-      </div>
+      </User>
       <span>{description}</span>
       <span>{date}</span>
     </ListItem>
@@ -21,24 +19,24 @@ const HistoryListItem = ({ prescription, openModal, className }) => {
 };
 
 const ListItem = styled.li`
-  .person {
-    display: flex;
-    align-items: center;
-    width: 20%;
-    color: #767676;
+  span {
     font-size: 14px;
+    color: #767676;
   }
+`;
 
-  .person img {
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  width: 20%;
+  color: #767676;
+  font-size: 14px;
+
+  img {
     width: 35px;
     height: 35px;
     margin-right: 10px;
     border-radius: 50px;
-  }
-
-  span {
-    font-size: 14px;
-    color: #767676;
   }
 `;
 

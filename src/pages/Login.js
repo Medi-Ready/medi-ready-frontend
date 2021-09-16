@@ -1,12 +1,15 @@
+import React from "react";
 import firebase from "../config/firebase";
-import { useHistory } from "react-router-dom";
 import { useMutation } from "react-query";
-
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { postLogin } from "../api";
-import Loading from "./Shared/Loading";
-import Error from "./Shared/Error";
+
+import Button from "../components/Shared/Button";
+import Error from "../components/Shared/Error";
+import Loading from "../components/Shared/Loading";
+import { PageTitle, PageContent } from "../components/Base";
 
 const Login = ({ onSuccess }) => {
   const history = useHistory();
@@ -42,29 +45,29 @@ const Login = ({ onSuccess }) => {
       };
 
       mutate(userData);
-    } catch (err) {}
+    } catch (err) {
+
+    }
   };
 
   return (
-    <Wrapper>
+    <StyledPageContent>
       <div>
-        <h2 className="sr-only">Login</h2>
+        <PageTitle className="sr-only">Login</PageTitle>
 
         <strong>Welcome back!</strong>
         <p>Sign in to your account to continue</p>
 
         <ButtonBox>
-          <button onClick={loginWithGoogle}><span>Google Login</span></button>
+          <StyledButton type="button" onClick={loginWithGoogle}><span>Google Login</span></StyledButton>
         </ButtonBox>
       </div>
-    </Wrapper>
+    </StyledPageContent>
   );
 };
 
-const Wrapper = styled.div`
+const StyledPageContent = styled(PageContent)`
   display: flex;
-  width: 100%;
-  height: 100%;
   justify-content: center;
   align-items: center;
 
@@ -91,17 +94,17 @@ const ButtonBox = styled.div`
   padding: 25px 30px 28px;
   border-radius: 15px;
   background-color: ${({ theme }) => theme.color.white};
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+`;
 
-  button {
-    padding: 3px 15px;
-    border-radius: 5px;
-    background-color: #2F49D1;
-    font-size: 18px;
-    color: ${({ theme }) => theme.color.white};
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-  }
+const StyledButton = styled(Button)`
+  padding: 3px 15px;
+  border-radius: 5px;
+  background-color: #2F49D1;
+  font-size: 18px;
+  color: ${({ theme }) => theme.color.white};
 
-  button span {
+  span {
     display: inline-block;
     background: url("/google-logo.png") no-repeat left center;
     padding: 10px 10px 10px 50px;

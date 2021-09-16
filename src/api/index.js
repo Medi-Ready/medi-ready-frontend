@@ -12,38 +12,47 @@ export const getAuthCheck = async () => {
     );
 
     return await response.json();
-  } catch (error) {}
+  } catch (error) {
+    throw Error("Internal Server Error");
+  }
 };
 
 export const postLogin = async (user) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       },
-      body: JSON.stringify(user),
-    },
-  );
+    );
 
-  return response.json();
+    return response.json();
+  } catch (error) {
+    throw new Error("Internal Server Error");
+  }
 };
 
 export const postLogout = async () => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/logout`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       },
-    },
-  );
+    );
 
-  return await response.json();
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getQueue = async () => {

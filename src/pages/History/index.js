@@ -1,20 +1,22 @@
-import styled from "styled-components";
-import { useQuery } from "react-query";
 import React, { useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import styled from "styled-components";
 
-import { getPrescriptions } from "../api";
-import { ModalContext } from "../contexts/ModalContext";
+import { getPrescriptions } from "../../api";
+import { ModalContext } from "../../contexts/ModalContext";
 
 import Detail from "./Detail";
-import Pagination from "./Pagination";
-import Loading from "./Shared/Loading";
-import HistoryListItem from "./Shared/HistoryListItem";
+import HistoryListItem from "./ListItem";
+import Error from "../../components/Shared/Error";
+import Loading from "../../components/Shared/Loading";
+import Pagination from "../../components/Shared/Pagination";
+import { PageTitle, PageContent } from "../../components/Base";
 
 const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
   const [page, setPage] = useState(0);
 
-  const { data, isPreviousData, isFetching, isStale } = useQuery(["prescriptions", page],
+  const { data, error, isPreviousData, isFetching, isStale, isError } = useQuery(["prescriptions", page],
     () => getPrescriptions(page), { keepPreviousData: true, staleTime: 5 * 1000 },
   );
 
@@ -28,9 +30,13 @@ const History = ({ queryClient }) => {
     handleModal(<Detail prescription={prescription} />);
   };
 
+  if (isError) {
+    return <Error error={error} />;
+  }
+
   return (
-    <>
-      <h2>Prescription History</h2>
+    <PageContent>
+      <PageTitle>Prescription History</PageTitle>
 
       <Wrapper>
         <ul>
@@ -44,7 +50,7 @@ const History = ({ queryClient }) => {
           {isFetching ? (
             <Loading />
           ) : (
-            data.prescriptions.map((prescription) => {
+            data.prescriptions?.map((prescription) => {
               return (
                 <HistoryListItem
                   key={prescription.prescription_id}
@@ -62,7 +68,7 @@ const History = ({ queryClient }) => {
         hasMoreData={data?.hasMoreData}
         isPreviousData={isPreviousData}
       />
-    </>
+    </PageContent>
   );
 };
 
@@ -87,8 +93,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eee;
-    padding: 30px 15px;
-    height: 50px;
+    padding: 8px 10px;
   }
 
   li.name-card b {
