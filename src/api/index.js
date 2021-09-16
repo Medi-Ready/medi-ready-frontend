@@ -27,12 +27,13 @@ export const postLogin = async (user) => {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
+        body: JSON.stringify(user),
       },
     );
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    throw new Error("Internal Server Error");
+    throw Error("Internal Server Error");
   }
 };
 
@@ -51,7 +52,7 @@ export const postLogout = async () => {
 
     return await response.json();
   } catch (error) {
-    throw error;
+    throw Error("Internal Server Error");
   }
 };
 

@@ -65,6 +65,10 @@ const StyledFlexBox = styled(FlexBox)`
   padding-bottom: 20px;
 `;
 
+const DateTitle = styled.div`
+  font-size: 20px;
+`;
+
 const ImageBox = styled.span`
   width: 110px;
 
