@@ -1,15 +1,14 @@
-import { values } from "lodash";
 import React from "react";
-
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const TextArea = ({ name, children, value, onChange, readOnly }) => {
   return (
     <Wrapper
       name={name}
-      onChange={onChange}
       value={value}
       readOnly={readOnly}
+      onChange={onChange}
     >
       {children}
     </Wrapper>
@@ -28,5 +27,12 @@ const Wrapper = styled.textarea`
   box-shadow: none;
   resize: none;
 `;
+
+TextArea.propTypes = {
+  value: PropTypes.string,
+  readOnly: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default TextArea;

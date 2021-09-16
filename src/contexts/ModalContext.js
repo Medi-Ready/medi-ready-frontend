@@ -1,5 +1,4 @@
 import React, { createContext } from "react";
-
 import PropTypes from "prop-types";
 
 import Modal from "../components/Shared/Modal";

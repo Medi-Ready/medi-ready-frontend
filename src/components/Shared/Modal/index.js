@@ -70,7 +70,6 @@ const Wrapper = styled.div`
   padding: 30px;
   border-radius: ${(props) => props.modalType === "ConfirmModal" && "20px"};
   background-color: ${({ theme }) => theme.color.white};
-  overflow-y: scroll;
 `;
 
 export default Modal;

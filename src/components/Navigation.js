@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-
 import styled from "styled-components";
-import logo from "../assets/mediwhite.png";
 
 import { postLogout } from "../api";
+
+import logo from "../assets/logo.png";
 
 const Navigation = ({ isLoggedIn, onLogout }) => {
   const history = useHistory();

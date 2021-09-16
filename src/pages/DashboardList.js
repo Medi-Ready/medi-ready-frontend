@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import QRCode from "qrcode";
-
 import styled from "styled-components";
 
-import Dashboard from "./Shared/Dashboard";
+import Dashboard from "../components/Shared/Dashboard";
+import { PageTitle, PageContent } from "../components/Base";
 
 const DashboardList = ({ userInfo }) => {
   const [qrUrl, setQrUrl] = useState("");
@@ -17,11 +17,11 @@ const DashboardList = ({ userInfo }) => {
     };
 
     goToURL();
-  }, [qrUrl]);
+  }, [userInfo]);
 
   return (
-    <Wrapper>
-      <h2>Dashboard</h2>
+    <PageContent>
+      <PageTitle>Dashboard</PageTitle>
 
       <Dashboard
         src="/icon-chart.png"
@@ -40,15 +40,9 @@ const DashboardList = ({ userInfo }) => {
       <QRCodeBox>
         <img src={qrUrl} />
       </QRCodeBox>
-    </Wrapper>
+    </PageContent>
   );
 };
-
-const Wrapper = styled.div`
-  position: relative;
-  height: 100%;
-  box-sizing: border-box;
-`;
 
 const QRCodeBox = styled.div`
   position: absolute;

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useMutation } from "react-query";
-
 import styled from "styled-components";
+
 import { postMedicine } from "../../api";
 
-import SearchBar from "../SearchBar";
-import Button from "../Shared/Button";
-import Loading from "../Shared/Loading";
-import TextInput from "../Shared/TextInput";
+import SearchBar from "../../components/SearchBar";
+import Button from "../../components/Shared/Button";
+import Loading from "../../components/Shared/Loading";
+import TextInput from "../../components/Shared/TextInput";
 
 const SearchForm = ({ medicineList, setMedicineList, setError }) => {
   const [keyword, setKeyword] = useState("");

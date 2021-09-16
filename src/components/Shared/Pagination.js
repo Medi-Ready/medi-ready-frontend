@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import FlexBox from "./Shared/FlexBox";
+import FlexBox from "./FlexBox";
 
 const Pagination = ({ page, setPage, hasMoreData, isPreviousData }) => {
   return (

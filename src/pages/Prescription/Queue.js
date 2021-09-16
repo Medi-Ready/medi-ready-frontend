@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useHistory } from "react-router";
-
-import { getQueue } from "../../api";
 
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import Badge from "../Shared/Badge";
-import Loading from "../Shared/Loading";
-import Error from "../Shared/Error";
+import { getQueue } from "../../api";
+
+import Badge from "../../components/Shared/Badge";
+import Error from "../../components/Shared/Error";
+import Loading from "../../components/Shared/Loading";
 
 const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
-  const history = useHistory();
   const { data, error, isError, isLoading, refetch } = useQuery("queue", getQueue);
 
   useEffect(() => {
@@ -26,14 +24,7 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
   }
 
   if (isError) {
-    <Error error={error} />;
-  }
-
-  if (data.result && data.result == "fail") {
-    history.push({
-      pathname: "/error",
-      state: { error: data.message },
-    });
+    return <Error error={error} />;
   }
 
   const { people } = data;
@@ -62,7 +53,7 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
 
   return (
     <Wrapper>
-      <h2>Waiting List</h2>
+      <Title>Waiting List</Title>
 
       <ul>
         {people?.map((data, index) => {
@@ -94,6 +85,11 @@ const Queue = ({ isSubmit, selectedUser, setSelectedUser }) => {
 Queue.propTypes = {
   setSelectedUser: PropTypes.func.isRequired,
 };
+
+const Title = styled.h2`
+  font-size: 20px;
+  font-weight: 600;
+`;
 
 const Wrapper = styled.div`
   padding-top: 10px;

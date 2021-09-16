@@ -25,11 +25,11 @@ const Wrapper = styled.div`
   span {
     display: block;
     position: absolute;
+    top: calc(50% - 10px);
     width: 15px;
     height: 15px;
-    background-color: #ccc;
-    top: calc(50% - 10px);
     border-radius: 50%;
+    background-color: #ccc;
   }
 
   span:nth-child(1) {

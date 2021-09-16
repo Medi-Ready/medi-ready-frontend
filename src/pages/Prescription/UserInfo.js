@@ -1,7 +1,7 @@
 import React from "react";
-
 import styled from "styled-components";
-import Badge from "../Shared/Badge";
+
+import Badge from "../../components/Shared/Badge";
 
 const UserInfo = ({ selectedUser }) => {
   const { name, picture } = selectedUser;

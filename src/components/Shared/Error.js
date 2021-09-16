@@ -1,26 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+
+import { PageTitle } from "../Base";
 
 const Error = ({ error }) => {
-  const location = useLocation();
-
   return (
     <Wrapper>
-      {location.state.error ? (
-        <p>{location.state.error}</p>
-      ) : (
-        <p>{String(error)}</p>
-      )}
+      <PageTitle>Error</PageTitle>
+      <p>{String(error)}</p>
       <StyledLink to="/">home</StyledLink>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  font-size: 20px;
+  position: fixed;
+  top: 0;
+  left: 230px;
+  display: block;
+  width: calc(100vw - 230px);
+  height: 100vw;
+  padding: 96px 40px;
+  background: #fff;
 `;
 
 const StyledLink = styled(Link)`

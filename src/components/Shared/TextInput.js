@@ -1,5 +1,4 @@
 import React from "react";
-
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -34,9 +33,12 @@ const Input = styled.input`
 TextInput.propTypes = {
   width: PropTypes.string,
   value: PropTypes.string,
+  className: PropTypes.string,
+  readOnly: PropTypes.string,
   placeholder: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 TextInput.defaultProps = {
