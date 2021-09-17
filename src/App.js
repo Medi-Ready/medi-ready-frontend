@@ -33,6 +33,7 @@ const App = () => {
 
         if (result === "success") {
           setUser(data);
+          history.push("/");
         } else {
           setUser("");
           history.push("/login");
@@ -58,20 +59,20 @@ const App = () => {
               <Switch>
                 <PrivateRoute
                   path="/dashboard"
-                  userInfo={user}
                   isAuthenticated={user}
                   component={DashboardList}
+                  userInfo={user}
                 />
                 <PrivateRoute
-                  userInfo={user}
                   path="/prescription"
                   isAuthenticated={user}
                   component={Prescription}
+                  userInfo={user}
                 />
                 <PrivateRoute
-                  component={History}
-                  isAuthenticated={user}
                   path="/prescriptions"
+                  isAuthenticated={user}
+                  component={History}
                   queryClient={queryClient}
                 />
                 <PrivateRoute
@@ -80,12 +81,12 @@ const App = () => {
                   component={Settings}
                 />
                 <Route path="/login">
-                  <Login pageTitle="Login" onSuccess={setUser} />
+                  <Login onSuccess={setUser} />
                 </Route>
                 <Route path="/error">
                   <Error />
                 </Route>
-                <Route path="/" exact>
+                <Route path="/">
                   <Redirect to="/dashboard" />
                 </Route>
               </Switch>

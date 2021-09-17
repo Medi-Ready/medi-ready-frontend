@@ -45,7 +45,7 @@ const Login = ({ onSuccess }) => {
       };
 
       mutate(userData);
-    } catch (err) {
+    } catch (error) {
 
     }
   };
@@ -59,7 +59,7 @@ const Login = ({ onSuccess }) => {
         <p>Sign in to your account to continue</p>
 
         <ButtonBox>
-          <StyledButton type="button" onClick={loginWithGoogle}><span>Google Login</span></StyledButton>
+          <StyledButton type="button" onClick={loginWithGoogle}>Google Login</StyledButton>
         </ButtonBox>
       </div>
     </StyledPageContent>
@@ -98,15 +98,15 @@ const ButtonBox = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  padding: 3px 15px;
+  padding: 10px 20px 10px 60px;
   border-radius: 5px;
-  background-color: #2F49D1;
+  background: #2F49D1 url("/google-logo.png") no-repeat left center;
+  background-position: 11px;
   font-size: 18px;
-  color: ${({ theme }) => theme.color.white};
+  color: #fff;
 
   span {
     display: inline-block;
-    background: url("/google-logo.png") no-repeat left center;
     padding: 10px 10px 10px 50px;
   }
 `;

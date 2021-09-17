@@ -42,9 +42,7 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
           </li>
           <li>
             {isLoggedIn ? (
-              <a href="#" onClick={handleLogout}>
-                Logout
-              </a>
+              <a href="#" onClick={handleLogout}>Logout</a>
             ) : (
               <Link to="/login">Login</Link>
             )}

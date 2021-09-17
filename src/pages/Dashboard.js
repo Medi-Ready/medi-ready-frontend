@@ -38,6 +38,7 @@ const Dashboard = ({ userInfo }) => {
       />
 
       <QRCodeBox>
+        <p>Pharmacy QR Check in</p>
         <img src={qrUrl} />
       </QRCodeBox>
     </PageContent>
@@ -46,13 +47,20 @@ const Dashboard = ({ userInfo }) => {
 
 const QRCodeBox = styled.div`
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 300px;
-  height: 300px;
+  right: 30px;
+  bottom: 30px;
+  width: 250px;
+  text-align: center;
+
+  p {
+    font-size: 15px;
+    padding-bottom: 11px;
+    color: #222;
+  }
 
   img {
     max-width: 100%;
+    border-radius: 10px;
   }
 `;
 
