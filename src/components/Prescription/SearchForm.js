@@ -88,6 +88,8 @@ const StyledButton = styled(Button)`
   position: absolute;
   top: 0;
   right: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 `;
 
 export default SearchForm;

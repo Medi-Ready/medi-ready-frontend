@@ -2,19 +2,20 @@ import { useMutation } from "react-query";
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 
-import { postPrescription } from "../../api";
-import { ModalContext } from "../../contexts/ModalContext";
+import { postPrescription } from "../api";
+import { ModalContext } from "../contexts/ModalContext";
 
-import Queue from "./Queue";
-import UserInfo from "./UserInfo";
-import InputForm from "./InputForm";
-import SearchForm from "./SearchForm";
-import Loading from "../../components/Shared/Loading";
-import FlexBox from "../../components/Shared/FlexBox";
-import Checkbox from "../../components/Shared/Checkbox";
-import { PageTitle, PageContent } from "../../components/Base";
-import ErrorMessage from "../../components/Shared/ErrorMessage";
-import ConfirmMessage from "../../components/Shared/Modal/ConfirmMessage";
+import Queue from "../components/Prescription/Queue";
+
+import Loading from "../components/Shared/Loading";
+import FlexBox from "../components/Shared/FlexBox";
+import Checkbox from "../components/Shared/Checkbox";
+import UserInfo from "../components/Prescription/UserInfo";
+import { PageTitle, PageContent } from "../components/Base";
+import ErrorMessage from "../components/Shared/ErrorMessage";
+import InputForm from "../components/Prescription/InputForm";
+import SearchForm from "../components/Prescription/SearchForm";
+import ConfirmMessage from "../components/Shared/Modal/ConfirmMessage";
 
 const Prescription = () => {
   const { handleModal } = useContext(ModalContext);
@@ -208,7 +209,7 @@ const BoxWrapper = styled.div`
 const CheckboxList = styled.ul`
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 450px;
   padding-left: 15px;
   vertical-align: top;

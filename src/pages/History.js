@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 
-import { getPrescriptions } from "../../api";
-import { ModalContext } from "../../contexts/ModalContext";
+import { getPrescriptions } from "../api";
+import { ModalContext } from "../contexts/ModalContext";
 
-import Detail from "./Detail";
-import HistoryListItem from "./ListItem";
-import Error from "../../components/Shared/Error";
-import Loading from "../../components/Shared/Loading";
-import Pagination from "../../components/Shared/Pagination";
-import { PageTitle, PageContent } from "../../components/Base";
+import Error from "../components/Shared/Error";
+import Detail from "../components/History/Detail";
+import Loading from "../components/Shared/Loading";
+import ListItem from "../components/History/ListItem";
+import Pagination from "../components/Shared/Pagination";
+import { PageTitle, PageContent } from "../components/Base";
 
 const History = ({ queryClient }) => {
   const { handleModal } = useContext(ModalContext);
@@ -52,7 +52,7 @@ const History = ({ queryClient }) => {
           ) : (
             data.prescriptions?.map((prescription) => {
               return (
-                <HistoryListItem
+                <ListItem
                   key={prescription.prescription_id}
                   prescription={prescription}
                   openModal={() => ViewDetail(prescription)}

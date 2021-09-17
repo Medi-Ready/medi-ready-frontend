@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-import ConfirmModal from "../../components/Shared/Modal/ConfirmModal";
+import ConfirmModal from "../Shared/Modal/ConfirmModal";
 import { ModalContext } from "../../contexts/ModalContext";
 
-import Button from "../../components/Shared/Button";
-import FlexBox from "../../components/Shared/FlexBox";
-import TextArea from "../../components/Shared/TextArea";
-import TextInput from "../../components/Shared/TextInput";
+import Button from "../Shared/Button";
+import FlexBox from "../Shared/FlexBox";
+import TextArea from "../Shared/TextArea";
+import TextInput from "../Shared/TextInput";
 
 const InputForm = ({ error, setIsSubmit, setFormData }) => {
   const { handleModal } = useContext(ModalContext);

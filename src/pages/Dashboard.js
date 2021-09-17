@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import styled from "styled-components";
 
-import Dashboard from "../components/Shared/Dashboard";
+import DashboardItem from "../components/Shared/DashboardItem";
 import { PageTitle, PageContent } from "../components/Base";
 
-const DashboardList = ({ userInfo }) => {
+const Dashboard = ({ userInfo }) => {
   const [qrUrl, setQrUrl] = useState("");
   const { user_id } = userInfo;
 
@@ -23,14 +23,14 @@ const DashboardList = ({ userInfo }) => {
     <PageContent>
       <PageTitle>Dashboard</PageTitle>
 
-      <Dashboard
+      <DashboardItem
         src="/icon-chart.png"
         color="#EAEDFA"
         number={101}
         text="Total Visitis"
       />
 
-      <Dashboard
+      <DashboardItem
         src="/icon-file.png"
         color="#FEF8ED"
         number={135}
@@ -56,4 +56,4 @@ const QRCodeBox = styled.div`
   }
 `;
 
-export default DashboardList;
+export default Dashboard;
