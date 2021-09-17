@@ -2,13 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const TextArea = ({ name, children, value, onChange, readOnly }) => {
+const TextArea = ({ name, children, value, onChange, placeholder, readOnly }) => {
   return (
     <Wrapper
       name={name}
       value={value}
       readOnly={readOnly}
       onChange={onChange}
+      placeholder={placeholder}
     >
       {children}
     </Wrapper>

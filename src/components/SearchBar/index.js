@@ -13,20 +13,23 @@ const SearchBar = ({ className, keyword, setKeyword, searchResult, setSearchResu
 
   useEffect(() => {
     if (debouncedSearchKeyword) {
-      async function getSearchData() {
-        setIsSearching(true);
+      try {
+        async function getSearchData() {
+          setIsSearching(true);
 
-        const { data } = await getMedicineNames(debouncedSearchKeyword);
+          const { data } = await getMedicineNames(debouncedSearchKeyword);
 
-        setSearchResult(data);
-        setIsSearching(false);
-      }
+          setSearchResult(data);
+          setIsSearching(false);
+        }
 
-      getSearchData();
+        getSearchData();
+      } catch (error) {}
+
     }
   }, [debouncedSearchKeyword]);
 
-  const renderResults = searchResult.map(({ medicine_id, itemName, frequency }, index) => {
+  const renderResults = searchResult?.map(({ medicine_id, itemName, frequency }, index) => {
     return (
       <SearchPreview
         index={index}
@@ -46,7 +49,7 @@ const SearchBar = ({ className, keyword, setKeyword, searchResult, setSearchResu
         name="search"
         value={keyword}
         className={className}
-        placeholder="Enter Medicine Name"
+        placeholder="약 검색어를 입력해주세요."
         onChange={(event) => setKeyword(event.target.value)}
       />
       {searchResult.length > 0 && <SearchResult>{renderResults}</SearchResult>}

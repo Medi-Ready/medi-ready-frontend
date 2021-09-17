@@ -56,7 +56,6 @@ const GlobalStyle = createGlobalStyle`
   img {
     display: block;
     width: 100%;
-    height: 100%;
   }
 
   .sr-only {
