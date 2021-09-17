@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
 
 import { getAuthCheck } from "./api";
 import { ModalProvider } from "./contexts/ModalContext";
 
-import theme from "./styles/theme";
 import GlobalStyles from "./styles";
-import Login from "./pages/Login";
-import History from "./pages/History";
-import Settings from "./pages/Settings";
+import theme from "./styles/theme";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Error from "./components/Shared/Error";
-import Prescription from "./pages/Prescription";
 import Navigation from "./components/Navigation";
-import DashboardList from "./pages/DashboardList";
+import Login from "./pages/Login";
+import Error from "./components/Shared/Error";
+import History from "./pages/History";
+import Settings from "./pages/Settings";
+import Prescription from "./pages/Prescription";
+import DashboardList from "./pages/Dashboard";
+import PrivateRoute from "./components/Shared/PrivateRoute";
 
 const queryClient = new QueryClient();
 
@@ -39,7 +39,7 @@ const App = () => {
         }
 
       } catch (error) {
-        return <Error error={error.message} />;
+        return <Error error={error} />;
       }
     };
 
@@ -56,18 +56,29 @@ const App = () => {
             <Header userInfo={user} />
             <ModalProvider>
               <Switch>
-                <Route path="/dashboard">
-                  <DashboardList pageTitle="Dashboard" userInfo={user} />
-                </Route>
-                <Route path="/prescription" userInfo={user}>
-                  <Prescription pageTitle="Prescription" />
-                </Route>
-                <Route path="/prescriptions">
-                  <History pageTitle="History" queryClient={queryClient} />
-                </Route>
-                <Route path="/settings">
-                  <Settings pageTitle="Settings" />
-                </Route>
+                <PrivateRoute
+                  path="/dashboard"
+                  userInfo={user}
+                  isAuthenticated={user}
+                  component={DashboardList}
+                />
+                <PrivateRoute
+                  userInfo={user}
+                  path="/prescription"
+                  isAuthenticated={user}
+                  component={Prescription}
+                />
+                <PrivateRoute
+                  component={History}
+                  isAuthenticated={user}
+                  path="/prescriptions"
+                  queryClient={queryClient}
+                />
+                <PrivateRoute
+                  path="/settings"
+                  isAuthenticated={user}
+                  component={Settings}
+                />
                 <Route path="/login">
                   <Login pageTitle="Login" onSuccess={setUser} />
                 </Route>
@@ -81,7 +92,6 @@ const App = () => {
             </ModalProvider>
             <Footer />
           </Section>
-          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>
     </Wrapper>
