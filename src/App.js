@@ -25,18 +25,18 @@ const App = () => {
   const history = useHistory();
 
   const [user, setUser] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const { data, result } = await getAuthCheck();
+        const { data, result, pharmacyInformation } = await getAuthCheck();
 
         if (result === "success") {
-          setUser(data);
+          setUser({ ...data, ...pharmacyInformation });
           history.push("/");
         } else {
           setUser("");
-          history.push("/login");
         }
 
       } catch (error) {
@@ -45,14 +45,14 @@ const App = () => {
     };
 
     checkLoginStatus();
-  }, []);
+  }, [isSignedIn]);
 
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
-          <Navigation isLoggedIn={user} onLogout={setUser} />
+          <Navigation isSignedIn={user} onLogout={setUser} />
           <Section>
             <Header userInfo={user} />
             <ModalProvider>
@@ -79,14 +79,15 @@ const App = () => {
                   path="/settings"
                   isAuthenticated={user}
                   component={Settings}
+                  userInfo={user}
                 />
                 <Route path="/login">
-                  <Login onSuccess={setUser} />
+                  <Login onSuccess={setUser} setIsSignedIn={setIsSignedIn} />
                 </Route>
                 <Route path="/error">
                   <Error />
                 </Route>
-                <Route path="/">
+                <Route path="/" exact>
                   <Redirect to="/dashboard" />
                 </Route>
               </Switch>

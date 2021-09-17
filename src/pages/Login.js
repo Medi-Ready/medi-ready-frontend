@@ -11,7 +11,7 @@ import Error from "../components/Shared/Error";
 import Loading from "../components/Shared/Loading";
 import { PageTitle, PageContent } from "../components/Base";
 
-const Login = ({ onSuccess }) => {
+const Login = ({ onSuccess, setIsSignedIn }) => {
   const history = useHistory();
 
   const { mutate, isLoading, error, isError } = useMutation(postLogin, {
@@ -19,6 +19,8 @@ const Login = ({ onSuccess }) => {
       const { data } = result;
 
       onSuccess(data);
+      setIsSignedIn(true);
+
       history.push("/");
     },
   });
