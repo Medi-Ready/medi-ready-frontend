@@ -54,10 +54,11 @@ const Wrapper = styled.div`
 
   p {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 15px;
     font-size: 14px;
     line-height: 45px;
     vertical-align: top;
+    color: #222;
   }
 
   em {

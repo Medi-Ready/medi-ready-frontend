@@ -28,13 +28,13 @@ const Button = styled.button`
 
   :before,
   :after {
-      content: "";
-      position: absolute;
-      top: 24px;
-      left: 10px;
-      width: 30px;
-      height: 2px;
-      background-color: black;
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: 10px;
+    width: 30px;
+    height: 2px;
+    background-color: black;
   }
 
   :before {
