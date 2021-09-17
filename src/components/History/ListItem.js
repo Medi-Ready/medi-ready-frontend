@@ -1,24 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 
-const HistoryListItem = ({ prescription, openModal, className }) => {
+const ListItem = ({ prescription, openModal, className }) => {
   const description = prescription.description;
   const date = prescription.created_at.slice(0, 10);
   const { name, picture } = prescription.patient.user;
 
   return (
-    <ListItem onClick={openModal} className={className}>
+    <Wrapper onClick={openModal} className={className}>
       <User>
         <span><img src={picture} alt={name} /></span>
         <b>{name}</b>
       </User>
       <span>{description}</span>
       <span>{date}</span>
-    </ListItem>
+    </Wrapper>
   );
 };
 
-const ListItem = styled.li`
+const Wrapper = styled.li`
   span {
     font-size: 14px;
     color: #767676;
@@ -40,4 +40,4 @@ const User = styled.div`
   }
 `;
 
-export default HistoryListItem;
+export default ListItem;

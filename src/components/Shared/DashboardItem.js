@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Dashboard = ({ src, color, number, text }) => {
+const DashboardItem = ({ src, color, number, text }) => {
   return (
     <Wrapper src={src} color={color}>
       <div>
@@ -54,11 +54,11 @@ const Wrapper = styled.div`
   }
 `;
 
-Dashboard.propTypes = {
+DashboardItem.propTypes = {
   src: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
 };
 
-export default Dashboard;
+export default DashboardItem;

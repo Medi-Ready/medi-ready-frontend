@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import FlexBox from "../../components/Shared/FlexBox";
-import TextArea from "../../components/Shared/TextArea";
-import TextInput from "../../components/Shared/TextInput";
+import FlexBox from "../Shared/FlexBox";
+import TextArea from "../Shared/TextArea";
+import TextInput from "../Shared/TextInput";
 
 const Detail = ({ prescription }) => {
   const description = prescription.description;
@@ -29,7 +29,7 @@ const Detail = ({ prescription }) => {
         const { itemName } = medicine.medicine_detail;
 
         return (
-          <TextInput readOnly label={itemName} value={itemName} />
+          <TextInput label={itemName} value={itemName} readOnly />
         );
       })}
 

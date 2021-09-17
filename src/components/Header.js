@@ -7,13 +7,17 @@ const Header = ({ userInfo }) => {
   return (
     <Wrapper>
       <div>
-        { name && <Text>Welcome, {name}</Text> }
-        <ImageBox>
-          <img
-            alt={name}
-            src={picture}
-          />
-        </ImageBox>
+        {name && (
+          <>
+            <Text>Welcome, {name}</Text>
+            <ImageBox>
+              <img
+                alt={name}
+                src={picture}
+              />
+            </ImageBox>
+          </>
+        )}
       </div>
     </Wrapper>
   );
