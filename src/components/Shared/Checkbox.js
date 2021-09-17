@@ -74,7 +74,7 @@ const Wrapper = styled.li`
 `;
 
 Checkbox.propTypes = {
-  checked: PropTypes.string,
+  checked: PropTypes.func,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
