@@ -210,9 +210,14 @@ const CheckboxList = styled.ul`
   display: inline-flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  max-width: 450px;
-  padding-left: 15px;
+  max-width: 430px;
+  padding: 0 20px;
   vertical-align: top;
+  box-sizing: border-box;
+
+  li:first-child {
+    border-right: 1px solid #eee;
+  }
 `;
 
 export default Prescription;

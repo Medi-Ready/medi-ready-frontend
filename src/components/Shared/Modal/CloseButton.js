@@ -21,9 +21,29 @@ const Button = styled.button`
   right: 0;
   width: 50px;
   height: 50px;
+  padding: 10px;
   background: ${props => props.color};
   border: none;
   color: ${({ theme }) => theme.color.white};
+
+  :before,
+  :after {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: 10px;
+    width: 30px;
+    height: 2px;
+    background-color: black;
+  }
+
+  :before {
+    transform: rotate(45deg);
+  }
+
+  :after {
+    transform: rotate(-45deg);
+  }
 `;
 
 CloseButton.propTypes = {

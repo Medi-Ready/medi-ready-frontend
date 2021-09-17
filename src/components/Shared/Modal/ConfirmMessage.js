@@ -5,7 +5,7 @@ import { ModalContext } from "../../../contexts/ModalContext";
 const ConfirmMessage = ({ text }) => {
   const { handleModal } = useContext(ModalContext);
 
-  setTimeout(() => handleModal(null), 2000);
+  setTimeout(() => handleModal(null), 1000000);
 
   return (
     <p>{text}</p>

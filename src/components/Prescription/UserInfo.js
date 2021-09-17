@@ -8,15 +8,18 @@ const UserInfo = ({ selectedUser }) => {
 
   return (
     <Wrapper>
-      {name && (
+      <span>
+        <img src={picture} alt={name} />
+      </span>
+      {name ?
         <>
-          <span>
-            <img src={picture} alt={name} />
-          </span>
           <b>{name}</b>
           <Badge color="green">Treating</Badge>
+        </> : <>
+          <p>대기 환자를 선택해주세요.</p>
+          <Badge>Waiting</Badge>
         </>
-      )}
+      }
     </Wrapper>
   );
 };
@@ -35,6 +38,10 @@ const Wrapper = styled.div`
   span {
     display: inline-block;
     font-size: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9e9e9;
 
     img {
         display: inline-block;
@@ -43,6 +50,15 @@ const Wrapper = styled.div`
         border-radius: 50%;
         vertical-align: middle;
       }
+  }
+
+  p {
+    display: inline-block;
+    margin-left: 15px;
+    font-size: 14px;
+    line-height: 45px;
+    vertical-align: top;
+    color: #222;
   }
 
   em {

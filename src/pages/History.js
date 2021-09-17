@@ -41,9 +41,9 @@ const History = ({ queryClient }) => {
       <Wrapper>
         <ul>
           <li className="name-card">
-            <b>Name</b>
-            <span>Status</span>
-            <span>Date</span>
+            <b>이름</b>
+            <span>복용지도</span>
+            <span>처방전 발행날짜</span>
           </li>
         </ul>
         <ul className="list-items">
@@ -74,7 +74,7 @@ const History = ({ queryClient }) => {
 
 const Wrapper = styled.div`
   margin-top: 20px;
-  min-height: 60vh;
+  min-height: 470px;
   padding: ${({ theme }) => theme.padding.default};
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.white};
@@ -98,13 +98,13 @@ const Wrapper = styled.div`
 
   li.name-card b {
     width: 20%;
-    font-size: 16px;
+    font-size: 14px;
     color: #767676;
   }
 
   li.name-card span {
     color: #767676;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   li span:nth-child(2) {
