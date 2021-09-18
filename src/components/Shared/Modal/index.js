@@ -68,7 +68,7 @@ const Dimmed = styled.div`
 const Wrapper = styled.div`
   position: relative;
   padding: 30px;
-  border-radius: ${(props) => props.modalType === "ConfirmModal" || props.modalType === "ConfirmMessage" && "20px"};
+  border-radius: ${(props) => props.modalType === "ConfirmModal" || props.modalType === "ConfirmMessage" ? "20px" : null};
   background-color: ${({ theme }) => theme.color.white};
 `;
 
