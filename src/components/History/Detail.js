@@ -19,8 +19,8 @@ const Detail = ({ prescription }) => {
         <InfoBox>
           <b>{name}</b>
           <FlexBox>
-            <DateTitle>Prescription Date</DateTitle>
-            <p>{date}</p>
+            <em>Prescription Date</em>
+            <span>{date}</span>
           </FlexBox>
         </InfoBox>
       </StyledFlexBox>
@@ -82,8 +82,9 @@ const InfoBox = styled.div`
   width: 100%;
   margin-left: 20px;
 
-  div p {
+  div span {
     font-size: 14px;
+    line-height: 1.1;
   }
 
   b {

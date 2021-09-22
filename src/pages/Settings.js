@@ -9,11 +9,12 @@ import Loading from "../components/Shared/Loading";
 import TextInput from "../components/Shared/TextInput";
 import { PageTitle, PageContent } from "../components/Base";
 
-const Settings = () => {
+const Settings = ({ userInfo }) => {
   const [input, setInput] = useState({ name: "", address: "" });
-  const { isLoading, mutate, isSuccess } = useMutation(updateSettings);
+  const { isLoading, mutate } = useMutation(updateSettings);
 
   const { name, address } = input;
+  const { pharmacy_name, pharmacy_address } = userInfo;
 
   if (isLoading) {
     return <Loading />;
@@ -39,17 +40,21 @@ const Settings = () => {
       <PageTitle>Settings</PageTitle>
 
       <form onSubmit={handleSubmit}>
-        <StyledTextInput name="name" placeholder="pharmacy name" value={name} onChange={handleChange} />
-        <StyledTextInput name="address" placeholder="pharmacy address" value={address} onChange={handleChange} />
-        <Button type="submit">send</Button>
+        <StyledTextInput
+          name="name"
+          label="pharmacy name"
+          placeholder={pharmacy_name}
+          onChange={handleChange}
+        />
+        <StyledTextInput
+          name="address"
+          label="pharmacy address"
+          placeholder={pharmacy_address}
+          onChange={handleChange}
+        />
+        <Button type="submit">수정하기</Button>
       </form>
 
-      {isSuccess && (
-        <>
-          <p>Pharmacy name : {input.name}</p>
-          <p>Pharmacy address : {input.address}</p>
-        </>
-      )}
     </StyledPageContent>
   );
 };

@@ -6,7 +6,7 @@ import { postLogout } from "../api";
 
 import logo from "../assets/logo.png";
 
-const Navigation = ({ isLoggedIn, onLogout }) => {
+const Navigation = ({ isSignedIn, onLogout }) => {
   const history = useHistory();
 
   const handleLogout = async (event) => {
@@ -41,10 +41,8 @@ const Navigation = ({ isLoggedIn, onLogout }) => {
             <Link to="/settings">Settings</Link>
           </li>
           <li>
-            {isLoggedIn ? (
-              <a href="#" onClick={handleLogout}>
-                Logout
-              </a>
+            {isSignedIn ? (
+              <a href="#" onClick={handleLogout}>Logout</a>
             ) : (
               <Link to="/login">Login</Link>
             )}

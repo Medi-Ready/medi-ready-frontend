@@ -36,6 +36,10 @@ const Wrapper = styled.div`
     min-width: 80px;
     position: initial;
     color: #222;
+
+    :before, :after {
+      content: none;
+    }
   }
 `;
 

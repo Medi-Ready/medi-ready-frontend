@@ -42,8 +42,9 @@ const InputForm = ({ error, setIsSubmit, setFormData }) => {
         <div>
           <TextArea
             name="description"
-            onChange={(event) => handleChange(event, setDescription)}
             value={description}
+            placeholder="복용지도를 입력해주세요."
+            onChange={(event) => handleChange(event, setDescription)}
           />
         </div>
         <InputButtonBox>
@@ -54,7 +55,7 @@ const InputForm = ({ error, setIsSubmit, setFormData }) => {
             value={duration}
             onChange={(event) => handleChange(event, setDuration)}
           />
-          <span>일치</span>
+          <span>일분</span>
           <Button type="submit">처방</Button>
         </InputButtonBox>
       </FlexBox>
@@ -68,8 +69,16 @@ const InputButtonBox = styled.div`
   bottom: 0;
   padding-left: 10px;
 
-  > * {
+  label {
     margin-left: 20px;
+  }
+
+  span {
+    margin-left: 10px;
+  }
+
+  button {
+    margin-left: 30px;
   }
 `;
 

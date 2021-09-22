@@ -22,7 +22,7 @@ const Modal = () => {
       return null;
     }
 
-    if (modalType === "ConfirmModal") {
+    if (modalType === "ConfirmModal" || modalType === "ConfirmMessage") {
       return (
         <Dimmed onClick={clickDimmed}>
           <Wrapper ref={modalRef} modalType={modalType}>
@@ -68,7 +68,7 @@ const Dimmed = styled.div`
 const Wrapper = styled.div`
   position: relative;
   padding: 30px;
-  border-radius: ${(props) => props.modalType === "ConfirmModal" && "20px"};
+  border-radius: ${(props) => props.modalType === "ConfirmModal" || props.modalType === "ConfirmMessage" ? "20px" : null};
   background-color: ${({ theme }) => theme.color.white};
 `;
 

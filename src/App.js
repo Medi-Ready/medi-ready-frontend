@@ -25,17 +25,18 @@ const App = () => {
   const history = useHistory();
 
   const [user, setUser] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const { data, result } = await getAuthCheck();
+        const { data, result, pharmacyInformation } = await getAuthCheck();
 
         if (result === "success") {
-          setUser(data);
+          setUser({ ...data, ...pharmacyInformation });
+          history.push("/");
         } else {
           setUser("");
-          history.push("/login");
         }
 
       } catch (error) {
@@ -44,43 +45,44 @@ const App = () => {
     };
 
     checkLoginStatus();
-  }, []);
+  }, [isSignedIn]);
 
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
-          <Navigation isLoggedIn={user} onLogout={setUser} />
+          <Navigation isSignedIn={user} onLogout={setUser} />
           <Section>
             <Header userInfo={user} />
             <ModalProvider>
               <Switch>
                 <PrivateRoute
                   path="/dashboard"
-                  userInfo={user}
                   isAuthenticated={user}
                   component={DashboardList}
+                  userInfo={user}
                 />
                 <PrivateRoute
-                  userInfo={user}
                   path="/prescription"
                   isAuthenticated={user}
                   component={Prescription}
+                  userInfo={user}
                 />
                 <PrivateRoute
-                  component={History}
-                  isAuthenticated={user}
                   path="/prescriptions"
+                  isAuthenticated={user}
+                  component={History}
                   queryClient={queryClient}
                 />
                 <PrivateRoute
                   path="/settings"
                   isAuthenticated={user}
                   component={Settings}
+                  userInfo={user}
                 />
                 <Route path="/login">
-                  <Login pageTitle="Login" onSuccess={setUser} />
+                  <Login onSuccess={setUser} setIsSignedIn={setIsSignedIn} />
                 </Route>
                 <Route path="/error">
                   <Error />
