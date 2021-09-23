@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "react-query";
 import styled from "styled-components";
 
-import { postMedicine } from "../../api";
+import { getMedicine } from "../../api";
 
 import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Shared/Button";
@@ -13,7 +13,7 @@ const SearchForm = ({ medicineList, setMedicineList, setError }) => {
   const [keyword, setKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
-  const { isLoading, mutate } = useMutation(postMedicine, {
+  const { isLoading, mutate } = useMutation(getMedicine, {
     onSuccess: ({ result, data, message }) => {
       if (result === "fail") {
         setError(message);

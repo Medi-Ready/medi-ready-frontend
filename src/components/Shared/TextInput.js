@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const TextInput = ({ label, width, name, placeholder, value, readOnly, className, onChange }) => {
   return (
-    <label htmlFor={label} >
+    <label htmlFor={label}>
       <Input type="text"
         id={label}
         name={name}
