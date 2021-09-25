@@ -1,7 +1,7 @@
 export const getAuthCheck = async () => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/auth-check`, {
+      `${process.env.REACT_APP_BASE_URL}/api/auth/check`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -20,7 +20,7 @@ export const getAuthCheck = async () => {
 export const postLogin = async (user) => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/login`, {
+      `${process.env.REACT_APP_BASE_URL}/api/auth/login`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -40,7 +40,7 @@ export const postLogin = async (user) => {
 export const postLogout = async () => {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/logout`, {
+      `${process.env.REACT_APP_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -71,17 +71,18 @@ export const getQueue = async () => {
   return await response.json();
 };
 
-export const postMedicine = async (medicine) => {
+export const getMedicine = async (medicine) => {
+  const name = medicine.name;
+
   const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/medicine`,
+    `${process.env.REACT_APP_BASE_URL}/api/medicines/medicine?name=${name}`,
     {
-      method: "POST",
+      method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(medicine),
     },
   );
 
@@ -90,7 +91,7 @@ export const postMedicine = async (medicine) => {
 
 export const postPrescription = async (form) => {
   const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/prescription`,
+    `${process.env.REACT_APP_BASE_URL}/api/prescription/new`,
     {
       method: "POST",
       credentials: "include",
