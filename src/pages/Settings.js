@@ -54,7 +54,6 @@ const Settings = ({ userInfo }) => {
         />
         <Button type="submit">수정하기</Button>
       </form>
-
     </StyledPageContent>
   );
 };
