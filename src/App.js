@@ -16,7 +16,7 @@ import Error from "./components/Shared/Error";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
 import Prescription from "./pages/Prescription";
-import DashboardList from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/Shared/PrivateRoute";
 
 const queryClient = new QueryClient();
@@ -60,7 +60,7 @@ const App = () => {
                 <PrivateRoute
                   path="/dashboard"
                   isAuthenticated={user}
-                  component={DashboardList}
+                  component={Dashboard}
                   userInfo={user}
                 />
                 <PrivateRoute
