@@ -1,15 +1,13 @@
 export const getAuthCheck = async () => {
   try {
-    const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/auth/check`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/check`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     return await response.json();
   } catch (error) {
@@ -19,17 +17,15 @@ export const getAuthCheck = async () => {
 
 export const postLogin = async (user) => {
   try {
-    const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(user),
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-    );
+      body: JSON.stringify(user),
+    });
 
     return await response.json();
   } catch (error) {
@@ -39,16 +35,14 @@ export const postLogin = async (user) => {
 
 export const postLogout = async () => {
   try {
-    const response = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/api/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-    );
+    });
 
     return await response.json();
   } catch (error) {
@@ -57,16 +51,14 @@ export const postLogout = async () => {
 };
 
 export const getQueue = async () => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/queue`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/queue`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   return await response.json();
 };
@@ -83,41 +75,35 @@ export const getMedicine = async (medicine) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    },
+    }
   );
 
   return await response.json();
 };
 
 export const postPrescription = async (form) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/prescription/new`,
-    {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(form),
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/prescriptions/new`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
     },
-  );
+    body: JSON.stringify(form),
+  });
 
   return await response.json();
 };
 
 export const getPrescriptions = async (page) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/prescriptions?page=${page}`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/prescriptions?page=${page}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   return await response.json();
 };
@@ -132,25 +118,22 @@ export const getMedicineNames = async (keyword) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    },
+    }
   );
 
   return await response.json();
 };
 
 export const updateSettings = async (form) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_BASE_URL}/api/settings/information`,
-    {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/settings/information`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(form),
+  });
 
   return await response.json();
 };
