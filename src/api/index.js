@@ -75,7 +75,7 @@ export const getMedicine = async (medicine) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
   );
 
   return await response.json();
@@ -118,7 +118,7 @@ export const getMedicineNames = async (keyword) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 
   return await response.json();
