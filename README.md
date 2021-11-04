@@ -189,7 +189,7 @@ EXPO_ACCESS_TOKEN=<Expo Access Token>
 - MySQL, Sequelize
 - AWS RDS
 - Node Schedule
-- Expo Server SDK(Firebase Cloud Messaging)
+- Expo Server SDK
 
 ### Testing
 
