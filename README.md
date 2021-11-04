@@ -18,14 +18,14 @@ Medi Ready는 **자동으로** 알림이 등록되기 때문에 간단하게 이
 ## 📚 Contents
 
 - [💊 MEDI READY](#-medi-ready)
-  - [📚 Contents](#-contents)
-  - [🔗 Links](#-links)
-  - [🔍 Preview](#-preview)
-  - [👨‍⚕️ Motivation](#️-motivation)
-  - [🔥 Features](#-features)
-  - [🎬 Getting Started](#-getting-started)
-  - [🖥 Tech Stacks](#-tech-stacks)
-  - [🤝 우리는 이렇게 개발했습니다](#-우리는-이렇게-개발했습니다)
+- [📚 Contents](#-contents)
+- [🔗 Links](#-links)
+- [🔍 Preview](#-preview)
+- [👨‍⚕️ Motivation](#️-motivation)
+- [🔥 Features](#-features)
+- [🎬 Getting Started](#-getting-started)
+- [🖥 Tech Stacks](#-tech-stacks)
+- [🤝 우리는 이렇게 개발했습니다](#-우리는-이렇게-개발했습니다)
 
 <br>
 
